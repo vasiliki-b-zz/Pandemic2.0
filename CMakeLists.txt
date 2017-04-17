@@ -52,7 +52,11 @@ set(SOURCE_FILES
         Util.cpp
         Util.h
         Vertex.cpp
+<<<<<<< HEAD
         Vertex.h GameBuilder.cpp GameBuilder.h SaveLoadDirector.cpp SaveLoadDirector.h Infection.cpp Infection.h)
+=======
+        Vertex.h GameBuilder.cpp GameBuilder.h SaveLoadDirector.cpp SaveLoadDirector.h MedicStrategy.cpp MedicStrategy.h ResearcherStrategy.cpp ResearcherStrategy.h OperationStrategy.cpp OperationStrategy.h)
+>>>>>>> origin/master
 
 add_executable(Pandemic ${SOURCE_FILES})
 

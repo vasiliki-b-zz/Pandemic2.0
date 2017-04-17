@@ -18,11 +18,14 @@ void TreatDisease::execute()
     }
     else
     {
-        player->getLocation()->removeDiseaseCubes(1);
+        if(player->getRoleSave().getName() == "Medic") {
+            player->getLocation()->removeAllDiseaseCubes();
+        } else {
+            player->getLocation()->removeDiseaseCubes(1);
+        }
         std::cout << "\n~ You have treated the " << player->getLocation()->getCity().getColour() << " disease at your current location!" << std::endl;
         std::cout << "\n~ Disease Cubes at " << player->getLocation()->getCity().getName() << ": " << player->getLocation()->getDiseaseCubes() << std::endl;
     }
-
 }
 
 

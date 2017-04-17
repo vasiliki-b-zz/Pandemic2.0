@@ -5,7 +5,7 @@
 class DriveOrFerry : public Strategy
 {
 public:
-	DriveOrFerry(Player* p, Graph& map) { this->player = p; this->map = &map; }
+	DriveOrFerry(Player* p, Graph& map) { this->player = p; this->map = &map;}
 	void execute();
 private:
 	Player* player;

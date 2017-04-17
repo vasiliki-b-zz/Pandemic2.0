@@ -38,6 +38,8 @@ public:
 	void setActions(int a){actions = a;}
 	int decrementActions(){return actions--;}
 	int incrementActions(){return actions++;}
+	CityVertex* researcherCity(std::vector<Player*> players);
+	Card findCardAtIndex(int);
 
 private:
 	std::string name;

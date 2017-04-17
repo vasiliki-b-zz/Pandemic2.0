@@ -14,66 +14,76 @@ void DiscoverCure::execute()
 		return;
 	}
 
-	std::vector<int> blueCards, yellowCards, blackCards, redCards;
+	std::vector<Card> blueCards, yellowCards, blackCards, redCards;
 
 	for (int i = 0; i < player->getHand().size(); i++)
 	{
 		if (player->getHand().at(i).getType() == CardType::CITY) //Get city cards only
 		{
 			if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::BLUE))
-				blueCards.push_back(i);
+				blueCards.push_back((Card &&) player->getHand().at(i));
 			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::YELLOW))
-				yellowCards.push_back(i);
+				yellowCards.push_back((Card&&) player->getHand().at(i));
 			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::BLACK))
-				blackCards.push_back(i);
+				blackCards.push_back((Card&&) player->getHand().at(i));
 			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::RED))
-				redCards.push_back(i);
+				redCards.push_back((Card&&) player->getHand().at(i));
 		}
 	}
 
-	std::vector<std::string> options;
-
-	if (blueCards.size() >= 5)
-	{
-		options.push_back("BLUE");
-		std::cout << "\n~ You can cure the BLUE disease by discarding the following cards: " << std::endl;
-		for (int i = 0; i < blueCards.size(); i++)
-			std::cout << "\n\t o " << player->getHand().at(i).getName() << std::endl;
+	if(player->getRoleSave().getName() == "Scientist") {
+		if (blueCards.size() >= 4) {
+			std::cout << "\n~ You are curing the BLUE disease!" << std::endl;
+			for (int i = 0; i < blueCards.size(); i++)
+				player->discardFromHand(blueCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("BLUE"));
+		} else if (yellowCards.size() >= 4) {
+			std::cout << "\n~ You are curing the YELLOW disease!" << std::endl;
+			for (int i = 0; i < yellowCards.size(); i++)
+				player->discardFromHand(yellowCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("YELLOW"));
+		} else if (blackCards.size() >= 4) {
+			std::cout << "\n~ You are curing the BLACK disease!" << std::endl;
+			for (int i = 0; i < blackCards.size(); i++)
+				player->discardFromHand(blackCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("BLACK"));
+		} else if (redCards.size() >= 4) {
+			std::cout << "\n~ You are curing the RED disease!" << std::endl;
+			for (int i = 0; i < redCards.size(); i++)
+				player->discardFromHand(redCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("RED"));
+		} else {
+			std::cout << "\n(!) You do not have enough city cards of the same colour to complete this action!"
+					  << std::endl;
+			player->incrementActions();
+			return;
+		}
+	} else {
+		if (blueCards.size() >= 5) {
+			std::cout << "\n~ You are curing the BLUE disease!" << std::endl;
+			for (int i = 0; i < blueCards.size(); i++)
+				player->discardFromHand(blueCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("BLUE"));
+		} else if (yellowCards.size() >= 5) {
+			std::cout << "\n~ You are curing the YELLOW disease!" << std::endl;
+			for (int i = 0; i < yellowCards.size(); i++)
+				player->discardFromHand(yellowCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("YELLOW"));
+		} else if (blackCards.size() >= 5) {
+			std::cout << "\n~ You are curing the BLACK disease!" << std::endl;
+			for (int i = 0; i < blackCards.size(); i++)
+				player->discardFromHand(blackCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("BLACK"));
+		} else if (redCards.size() >= 5) {
+			std::cout << "\n~ You are curing the RED disease!" << std::endl;
+			for (int i = 0; i < redCards.size(); i++)
+				player->discardFromHand(redCards.at(i));
+			board->flipCureMarker(DiseaseColourStringToEnum("RED"));
+		} else {
+			std::cout << "\n(!) You do not have enough city cards of the same colour to complete this action!"
+					  << std::endl;
+			player->incrementActions();
+			return;
+		}
 	}
-	else if (yellowCards.size() >= 5)
-	{
-		options.push_back("YELLOW");
-		std::cout << "\n~ You can cure the YELLOW disease by discarding the following cards: " << std::endl;
-		for (int i = 0; i < yellowCards.size(); i++)
-			std::cout << "\n\t o " << player->getHand().at(i).getName() << std::endl;
-	}
-	else if (blackCards.size() >= 5)
-	{
-		options.push_back("BLACK");
-		std::cout << "\n~ You can cure the BLACK disease by discarding the following cards: " << std::endl;
-		for (int i = 0; i < blackCards.size(); i++)
-			std::cout << "\n\t o " << player->getHand().at(i).getName() << std::endl;
-	}
-	else if (redCards.size() >= 5)
-	{
-		options.push_back("RED");
-		std::cout << "\n~ You can cure the RED disease by discarding the following cards: " << std::endl;
-		for (int i = 0; i < redCards.size(); i++)
-			std::cout << "\n\t o " << player->getHand().at(i).getName() << std::endl;
-	}
-	else
-	{
-		std::cout << "\n(!) You do not have enough city cards of the same colour to complete this action!" << std::endl;
-		player->incrementActions();player->incrementActions();
-		return;
-	}
-
-	std::cout << "\n~ What disease would you like to cure?" << std::endl;
-
-	for (int i = 0; i < options.size(); i++)
-		std::cout << "\t" << i + 1 << " - " << options.at(i) << std::endl;
-
-	int choice = Game::getUserIntput(1, options.size());
-	board->flipCureMarker(DiseaseColourStringToEnum(options.at(choice)));
-
 }
