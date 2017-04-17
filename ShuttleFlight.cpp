@@ -37,6 +37,9 @@ void ShuttleFlight::execute()
 
         CityVertex* destination = (CityVertex*)map->getVertex(destinations.at(choice - 1));
         player->setLocation(destination);
+        if(player->getRoleSave().getName() == "Medic" && board->hasCure(player->getLocation()->getCity().getColour())) {
+            player->getLocation()->removeAllDiseaseCubes();
+        }
     }
     else {
         std::cout << "\n(!) Your current city must have a Reasearch Station to complete this action!" << std::endl;

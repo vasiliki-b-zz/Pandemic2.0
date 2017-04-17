@@ -6,7 +6,7 @@
 class ShuttleFlight : public Strategy
 {
 public:
-	ShuttleFlight(Player* p, Graph& map) { this->player = p; this->map = &map; }
+	ShuttleFlight(Player* p, Graph& map) { this->player = p; this->map = &map;}
 	~ShuttleFlight();
 	void execute();
 private:

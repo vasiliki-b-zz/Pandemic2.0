@@ -11,6 +11,9 @@
 #include "TreatDisease.h"
 #include "ShareKnowledge.h"
 #include "SaveLoadDirector.h"
+#include "MedicStrategy.h"
+#include "ResearcherStrategy.h"
+#include "OperationStrategy.h"
 
 Game::~Game()
 {
@@ -162,7 +165,7 @@ void Game::configureBoard()
         std::cout << "(!) Error: IO exception..." << std::endl;
 	CityVertex* start = dynamic_cast<CityVertex*>(map.getVertex("Atlanta"));
 	start->addResearchStation();
-//	map.updateRSInEdge(start->getName());
+	board.decreaseResearchStations();
 }
 
 void Game::configureRoleCards()
@@ -197,6 +200,9 @@ void Game::configureRoleCards()
 
 					Card* roleCard = new RoleCard(name, PawnColourStringToEnum(colour), description);
 					roleDeck.add(roleCard);
+                    if(roleCard->getName() == "Researcher") {
+                        hasResearcher = true;
+                    }
 				}
 			}
 		}
@@ -420,7 +426,6 @@ void Game::initializeInfectedCities()
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
 			infectedCity->addDiseaseCubes(3);
-//			map.updateDSInEdge(infectedCity->getName(),3);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
 			if (i == 2)
 			{
@@ -434,7 +439,6 @@ void Game::initializeInfectedCities()
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
 			infectedCity->addDiseaseCubes(2);
-//			map.updateDSInEdge(infectedCity->getName(),2);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
 			if (i == 5)
 			{
@@ -446,7 +450,6 @@ void Game::initializeInfectedCities()
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
 			infectedCity->addDiseaseCubes(1);
-//			map.updateDSInEdge(infectedCity->getName(),1);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
 			if (i == 8)
 			{
@@ -576,6 +579,10 @@ void Game::helpMenu(std::string input)
 
 void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 {
+	if(p->getRoleSave().getName() == "Medic") {
+		turnTaker->setStrategy(new MedicStrategy(p, map, board));
+		turnTaker->executeStrategy();
+	}
 	switch (i) {
 		case 1: //DRIVE OR FERRY
 		{
@@ -615,13 +622,11 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 
 void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 {
-	//============================================================================================TODO check actions decrement
 	switch (i) {
 		case 1: //BUILD RESEARCH STATION
-		{;
-			turnTaker->setStrategy(new BuildResearchStation(p));
+		{
+			turnTaker->setStrategy(new BuildResearchStation(p, board));
 			turnTaker->executeStrategy();
-//			map.updateRSInEdge(p->getLocation()->getName());
 
 			p->decrementActions();
 			break;
@@ -649,6 +654,39 @@ void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 //			turnTaker->executeStrategy();
 
 //			std::cout << "\Share Knowledge\n";
+			p->decrementActions();
+			break;
+		}
+	}
+}
+
+void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
+	switch(i) {
+		case 1: {
+			turnTaker->setStrategy(new ResearcherStrategy(players.at(i),players, checks));
+			turnTaker->executeStrategy();
+
+			p->decrementActions();
+			break;
+		}
+		case 2: {
+			turnTaker->setStrategy(new DispatcherStrategy(players.at(i),players, map));
+			turnTaker->executeStrategy();
+
+			p->decrementActions();
+			break;
+		}
+		case 3: {
+			turnTaker->setStrategy(new OperationStrategy(players.at(i),map, board));
+			turnTaker->executeStrategy();
+
+			p->decrementActions();
+			break;
+		}
+		case 4: {
+			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
+			turnTaker->executeStrategy();
+
 			p->decrementActions();
 			break;
 		}
@@ -689,12 +727,27 @@ void Game::play()
 			chooseAction:
 			while(players.at(i)->getActions() > 0) // Choose an action 4 times
 			{
+                bool canGetResearcherCard = false;
 				do
 				{
 					std::cout << "\n~ Choose an action:" << std::endl;
 
 					std::cout << "\t1 - BASIC ACTION" << std::endl;
 					std::cout << "\t2 - SPECIAL ACTION" << std::endl;
+                    if(hasResearcher) {
+                        CityVertex* cv = players.at(i)->researcherCity(players);
+                        if(players.at(i)->getLocation()->getName() == cv->getName()) {
+                            std::cout << "\t3 - Role ACTION" << std::endl;
+                            canGetResearcherCard = true;
+                        }
+                    } else {
+                        if (players.at(i)->getRoleSave().getName() == "Researcher" ||
+                            players.at(i)->getRoleSave().getName() == "Dispatcher" ||
+                            players.at(i)->getRoleSave().getName() == "Operations Expert" ||
+                            players.at(i)->getRoleSave().getName() == "Contigency Planner") {
+                            std::cout << "\t3 - Role ACTION" << std::endl;
+                        }
+                    }
 
 					std:: cout << "\n\t0 - END TURN" << std::endl;
 
@@ -709,7 +762,7 @@ void Game::play()
 						//system("PAUSE");
 					}
 
-				} while (input != "0" && input != "1" && input != "2");
+				} while (input != "0" && input != "1" && input != "2" && input != "3");
 
 				if (input == "0")
 					break;
@@ -781,6 +834,48 @@ void Game::play()
 					} while (input != "1" && input != "2" && input != "3" && input != "4");
 
 					chooseSpecialAction(players.at(i), stoi(input), turnTaker);
+
+					std::cout << "\n~ Your current location is: " << players.at(i)->getLocation()->toString() << std::endl;
+					std::cout << "--------------------------------------------------" << std::endl;
+					std::cout << "~ Actions left: " << players.at(i)->getActions() << std::endl;
+					std::cout << "--------------------------------------------------" << std::endl;
+				}
+				else if( input == "3") {
+					do
+					{
+						std::cout << "\t~ ROLE ACTION ~" << std::endl;
+                        if(canGetResearcherCard ) {
+                            std::cout << "1 - To get a card from Researcher" << std::endl;
+                        }
+						else if(players.at(i)->getRoleSave().getName() == "Researcher") {
+							std::cout << "1 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave().getName() == "Dispatcher") {
+							std::cout << "2 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave().getName() == "Operations Expert") {
+							std::cout << "3 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave().getName() == "Contigency Planner") {
+							std::cout << "4 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+						}
+
+						std::cout << "\n\t0 - BACK" << std::endl;
+
+						input.clear();
+
+						std::cout << "> ";
+						std::cin >> input;
+
+						if (input == "menu" || input == "details" || input == "map" || input == "board" || input == "help")
+						{
+							helpMenu(input);
+							//system("PAUSE");
+						}
+
+						if (input == "0")
+							goto chooseAction; //HACKS
+
+					} while (input != "1" && input != "2" && input != "3" && input != "4");
+
+					roleActions(players.at(i), stoi(input), turnTaker, canGetResearcherCard);
 
 					std::cout << "\n~ Your current location is: " << players.at(i)->getLocation()->toString() << std::endl;
 					std::cout << "--------------------------------------------------" << std::endl;
