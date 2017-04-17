@@ -200,9 +200,6 @@ void Game::configureRoleCards()
 
 					Card* roleCard = new RoleCard(name, PawnColourStringToEnum(colour), description);
 					roleDeck.add(roleCard);
-                    if(roleCard->getName() == "Researcher") {
-                        hasResearcher = true;
-                    }
 				}
 			}
 		}
@@ -365,6 +362,9 @@ void Game::initializePlayers()
 
 		RoleCard& playerRoleCard = (RoleCard&)roleDeck.drawBack();
 		player->setRole(playerRoleCard);
+        if(playerRoleCard.getName() == "Researcher") {
+            hasResearcher = true;
+        }
 
 		std::cout << playerRoleCard.print() << std::endl;
 
@@ -610,7 +610,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 4: //SHUTTLE FLIGHT
 		{
-			turnTaker->setStrategy(new ShuttleFlight(p, map));
+			turnTaker->setStrategy(new ShuttleFlight(p, map, board));
 			turnTaker->executeStrategy();
 			//============================================================================================TODO don't decrement action if no research station on current location
 			p->decrementActions();
@@ -660,8 +660,6 @@ void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 	}
 }
 
-<<<<<<< HEAD
-
 void Game::discardCard(Player* player){
 	while (player->getHand().size() > MAX_CARDS) {
 		std::cout << "\n(!) You must discard " << player->getHand().size() - MAX_CARDS << " cards." << std::endl;
@@ -691,8 +689,6 @@ void Game::discardCard(Player* player){
 }
 
 
-
-=======
 void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 	switch(i) {
 		case 1: {
@@ -703,8 +699,8 @@ void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 			break;
 		}
 		case 2: {
-			turnTaker->setStrategy(new DispatcherStrategy(players.at(i),players, map));
-			turnTaker->executeStrategy();
+//			turnTaker->setStrategy(new DispatcherStrategy(players.at(i),players, map));
+//			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
@@ -717,8 +713,8 @@ void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 			break;
 		}
 		case 4: {
-			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
-			turnTaker->executeStrategy();
+//			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
+//			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
@@ -726,7 +722,6 @@ void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 	}
 }
 
->>>>>>> origin/master
 void Game::play()
 {
 	std::string input = "";
@@ -768,6 +763,7 @@ void Game::play()
 
 					std::cout << "\t1 - BASIC ACTION" << std::endl;
 					std::cout << "\t2 - SPECIAL ACTION" << std::endl;
+
                     if(hasResearcher) {
                         CityVertex* cv = players.at(i)->researcherCity(players);
                         if(players.at(i)->getLocation()->getName() == cv->getName()) {
