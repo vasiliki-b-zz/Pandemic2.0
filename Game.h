@@ -13,7 +13,7 @@
 class Game
 {
 public:
-	Game() : board(board), map(map), referenceCard(referenceCard), roleDeck(roleDeck), epidemicDeck(epidemicDeck), infectionDeck(infectionDeck), playerDeck(playerDeck), infectionDiscard(infectionDiscard), playerDiscard(playerDiscard) { numOfPlayers = 0; gameOver = false; };
+	Game() : board(board), map(map), referenceCard(referenceCard), roleDeck(roleDeck), infectionDeck(infectionDeck), playerDeck(playerDeck), infectionDiscard(infectionDiscard), playerDiscard(playerDiscard) { numOfPlayers = 0; gameOver = false; };
 	~Game();
 
     Graph getMap() {return map;};
@@ -25,6 +25,8 @@ public:
     void setMap(Graph g) { this->map = g; };
     void setBoard(Board b) { this->board = b;};
     void setPlayers(std::vector<Player*> p) {this->players = p;};
+
+	void discardCard (Player* player);
 
 	static int getUserIntput(int min, int max);
 
@@ -43,7 +45,7 @@ private:
 	Graph map;
 	Board board;
 	Card referenceCard;
-	Deck roleDeck, epidemicDeck, infectionDeck, playerDeck, infectionDiscard, playerDiscard;
+	Deck roleDeck, infectionDeck, playerDeck, infectionDiscard, playerDiscard;
 	std::string currentPlayer;
 	int currentTurn;
 

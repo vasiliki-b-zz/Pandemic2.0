@@ -316,7 +316,7 @@ void Game::configureEpidemicCards()//===========================================
 					description = value;
 
 					Card* epidemicCard = new Card(name, description, CardType::EPIDEMIC);
-					epidemicDeck.add(epidemicCard);
+					playerDeck.add(epidemicCard);
 				}
 			}
 		}
@@ -655,6 +655,37 @@ void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 	}
 }
 
+
+void Game::discardCard(Player* player){
+	while (player->getHand().size() > MAX_CARDS) {
+		std::cout << "\n(!) You must discard " << player->getHand().size() - MAX_CARDS << " cards." << std::endl;
+		std::cout << "\n(!) Displaying " << player->getName()<< "'s hand:" << std::endl;
+		std::vector<Card> hand = player->getHand();
+		for (int g = 0; g < hand.size(); g++) {
+			std::cout << "\t(" << g + 1 << ") : " << hand.at(g).getName()<<std::endl;
+
+		}
+		std::cout
+				<< "Which card would you like to discard? (If you choose an event card, it will be played)\n";
+		int choice;
+		std::cin >> choice;
+		choice--;
+		Card chosen = hand.at(choice);
+		if (chosen.getType() == CardType::CITY) {
+			std::cout << "Discarding " << chosen.getName() << std::endl;
+			player->discardFromHand(choice);
+		}
+		else if (chosen.getType() == CardType::EVENT){
+			std::cout << "Playing event card ";
+			// do event
+		}
+		std::cout << player->getName() << " now has " << player->getHand().size() << " cards\n";
+	}
+
+}
+
+
+
 void Game::play()
 {
 	std::string input = "";
@@ -792,63 +823,47 @@ void Game::play()
 			//==============================================================================================TODO Extract to separate method
 
 			//***** DRAW 2 PLAYER CARDS *****
-			if (players.at(i)->getHand().size() <= MAX_CARDS)
+			std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
+			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
 			{
-				std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
-				for (int j = 0; j < 2; j++) //Draw 2 Player Cards
+				Card card = playerDeck.drawBack();
+				if (card.getType() == CardType::EPIDEMIC) //If player draws and EPIDEMIC card
 				{
-					Card card = playerDeck.drawBack();
-					if (card.getType() == CardType::EPIDEMIC) //If player draws and EPIDEMIC card
+					board.increaseInfectionRate(); //Increase the infection rate
+
+					Card infection = infectionDeck.drawFront(); //Draw infection card from front of deck
+					CityVertex* city = dynamic_cast<CityVertex*>(map.getVertex(infection.getName()));
+
+					if (city->getDiseaseCubes() == 0)
+						city->addDiseaseCubes(3);
+					else if (city->getDiseaseCubes() > 0) //If city has more than 1 disease cube
 					{
-						board.increaseInfectionRate(); //Increase the infection rate
+						city->removeAllDiseaseCubes();
+						city->addDiseaseCubes(3); //Max is 3 disease cubes
 
-						Card infection = infectionDeck.drawFront(); //Draw infection card from front of deck
-						CityVertex* city = dynamic_cast<CityVertex*>(map.getVertex(infection.getName()));
+						board.increaseOutbreakMarker();
 
-						if (city->getDiseaseCubes() == 0)
-							city->addDiseaseCubes(3);
-						else if (city->getDiseaseCubes() > 0) //If city has more than 1 disease cube
-						{
-							city->removeAllDiseaseCubes();
-							city->addDiseaseCubes(3); //Max is 3 disease cubes
-
-							board.increaseOutbreakMarker();
-
-							infectionDiscard.shuffle();
-							infectionDeck.merge(infectionDiscard);
-						}
-						playerDiscard.add(&card); //Discard Epidemic Card
+						infectionDiscard.shuffle();
+						infectionDeck.merge(infectionDiscard);
 					}
-					else
-						players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
+					playerDiscard.add(&card); //Discard Epidemic Card
 				}
-
-				if (players.at(i)->getHand().size() >= MAX_CARDS)
-				{
-					std::cout << "\n(!) Warning: You may not have more than " << MAX_CARDS << " cards in your hand. Be sure to use or discard cards in your next turn." << std::endl;
-				}
+				else
+					players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
 			}
-			else
+
+			if (players.at(i)->getHand().size() >= MAX_CARDS)
 			{
-				std::cout << "\n(!) You did not reduce your hand, two cards will be discarded at random." << std::endl;
-
-				int randomIndex;
-				srand(time(NULL));
-
-				for (int j = 0; j < 2; j++)
-				{
-					randomIndex = rand() % players.at(i)->getHand().size();
-					players.at(i)->discardFromHand(randomIndex);
-				}
-
-				std::cout << "\n~ Player hand reduced to below maximum." << std::endl;
+				discardCard(players.at(i));
 			}
 
-			//==============================================================================================TODO Infect cities
-			//***** INFECT CITIES *****
+		//==============================================================================================TODO Infect cities
+		//***** INFECT CITIES *****
 		}
 	}
 }
+
+
 
 void Game::save() {
 	SaveLoadDirector cook;
