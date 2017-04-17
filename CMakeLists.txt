@@ -52,7 +52,7 @@ set(SOURCE_FILES
         Util.cpp
         Util.h
         Vertex.cpp
-        Vertex.h GameBuilder.cpp GameBuilder.h SaveLoadDirector.cpp SaveLoadDirector.h)
+        Vertex.h GameBuilder.cpp GameBuilder.h SaveLoadDirector.cpp SaveLoadDirector.h Infection.cpp Infection.h)
 
 add_executable(Pandemic ${SOURCE_FILES})
 
