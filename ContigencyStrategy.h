@@ -2,15 +2,17 @@
 // Created by Quentin on 4/17/17.
 //
 
-#ifndef PANDEMIC_CONTIGENCYSTRATEGY_H
-#define PANDEMIC_CONTIGENCYSTRATEGY_H
+#pragma once
 
 #include "Strategy.h"
-#include "Board.h"
+#include "Deck.h"
 
-class ContigencyStrategy {
-
+class ContigencyStrategy : public Strategy{
+public:
+    ContigencyStrategy(Player* p, Deck &deck) { this->p = p; this->deck = &deck;};
+    ~ContigencyStrategy();
+    void execute();
+private:
+    Player* p;
+    Deck* deck;
 };
-
-
-#endif //PANDEMIC_CONTIGENCYSTRATEGY_H

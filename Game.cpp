@@ -14,6 +14,7 @@
 #include "MedicStrategy.h"
 #include "ResearcherStrategy.h"
 #include "OperationStrategy.h"
+#include "ContigencyStrategy.h"
 
 Game::~Game()
 {
@@ -713,8 +714,8 @@ void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 			break;
 		}
 		case 4: {
-//			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
-//			turnTaker->executeStrategy();
+			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
+			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;

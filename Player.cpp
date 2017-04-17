@@ -140,6 +140,12 @@ CityVertex* Player::researcherCity(std::vector<Player*> players) {
 	}
 }
 
+void Player::addContingencyPlannerCard(Card card) {
+	if(this->getRoleSave().getName() == "Contigency Planner") {
+		this->extraCardContingencyPlanner = card;
+	}
+}
+
 std::string Player::toString(std::vector<Player*> players) {
 	std::string s = "";
 	for(int i = 0; i < players.size(); i++) {

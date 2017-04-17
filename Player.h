@@ -40,6 +40,8 @@ public:
 	int incrementActions(){return actions++;}
 	CityVertex* researcherCity(std::vector<Player*> players);
 	Card findCardAtIndex(int);
+	void addContingencyPlannerCard(Card card);
+	Card getContigencyPlannerCard() { return this->extraCardContingencyPlanner;};
 
 private:
 	std::string name;
@@ -47,6 +49,7 @@ private:
 	RoleCard roleCard;
 	PawnColour::PawnColour pawnColour;
 	std::vector<Card> playerHand;
+	Card extraCardContingencyPlanner;
 	int actions = 4;
 };
 
