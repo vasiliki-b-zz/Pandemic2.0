@@ -30,6 +30,7 @@ public:
 	void discardCard (Player* player);
 
 	static int getUserIntput(int min, int max);
+	bool hasResearcher = false;
 
 private:
 	const int MIN_PLAYERS = 2;
@@ -71,6 +72,7 @@ private:
 	void helpMenu(std::string input);
 	void chooseBasicAction(Player* p, int i, TurnTaker* turnTaker);
 	void chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker);
+	void roleActions(Player* p, int i, TurnTaker* turnTaker, bool);
 	void play();
 
 

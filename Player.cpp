@@ -38,6 +38,10 @@ int Player::findIndexOfCard(std::string name, CardType::CardType type)
 	return -1;
 }
 
+Card Player::findCardAtIndex(int n) {
+    return this->playerHand.at(n);
+}
+
 int Player::save(std::ofstream &file, std::vector<Player*> players) {
 	if (file.is_open())
 	{
@@ -126,6 +130,14 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 	else {
         std::cout << "(!) Error: IO exception..." << std::endl;
     }
+}
+
+CityVertex* Player::researcherCity(std::vector<Player*> players) {
+	for(Player* p : players) {
+        if(p->getRoleSave().getName() == "Researcher") {
+            return p->getLocation();
+        }
+	}
 }
 
 std::string Player::toString(std::vector<Player*> players) {

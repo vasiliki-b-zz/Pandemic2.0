@@ -8,7 +8,7 @@
 class Board
 {
 public:
-	Board() { this->outbreakMarker = 0; this->infectionRateIndex = 0; };
+	Board() { this->outbreakMarker = 0; this->infectionRateIndex = 0; this->researchStations = 6;};
 	~Board();
 	void increaseOutbreakMarker() { this->outbreakMarker++; };
 	int getOutbreakMarker() { return outbreakMarker; };
@@ -17,6 +17,8 @@ public:
 	void addCureMarker(Disease::Colour colour);
 	void flipCureMarker(Disease::Colour colour);
 	bool hasCure(Disease::Colour colour);
+	void decreaseResearchStations() {this->researchStations--;};
+	int getResearchStationsLeft() { return this->researchStations;};
 	std::string toString();
 
 private:
@@ -25,5 +27,6 @@ private:
 	int infectionRateIndex;
 	bool cureMarkers[4] = { false, false, false, false };
 	bool eradicatedMarkers[4] = { false, false, false, false };
+	int researchStations;
 };
 
