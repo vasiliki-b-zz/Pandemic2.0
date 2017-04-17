@@ -13,6 +13,8 @@ Infection::Infection() {}
 
 Infection::~Infection() {}
 
+// todo add the methods that are commented out.
+// 
 void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph) {
 // todo
 //    string color = DiseaseColourEnumToString(city->getColour());
