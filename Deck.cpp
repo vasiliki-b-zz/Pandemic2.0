@@ -1,5 +1,5 @@
 #include <iostream>
-#include <ctime>
+#include <random>
 #include "Deck.h"
 
 Deck::Deck()
@@ -61,6 +61,18 @@ void Deck::discard(Card* c)
 
 void Deck::shuffle()
 {
-	std::srand(std::time(0));
-	std::random_shuffle(cards.begin(), cards.end());
+	std::cout << "Shuffling cards" << std::endl;
+	std::random_device rd;
+	std::mt19937 g(rd());
+	std::shuffle(this->cards.begin(), this->cards.end(), g);
+	std::cout << "Cards have been shuffled" << std::endl;
+
+//	std::srand(std::time(0));
+//	std::random_shuffle(cards.begin(), cards.end());
+}
+
+Card* Deck::getCardAtIndex(int n) {
+	Card* card = cards.at(n);
+	cards.erase(cards.begin() + n);
+	return cards.at(n);
 }
