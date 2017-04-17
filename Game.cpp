@@ -837,7 +837,7 @@ void Game::play()
                             infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
                         }
                     }
-                    // todo intensify 
+                    // todo intensify
 
                 }
 				else
@@ -849,8 +849,16 @@ void Game::play()
 				discardCard(players.at(i));
 			}
 		//==============================================================================================TODO Infect cities
-            for (int p=0;p<2;p++){
-                infectionDeck.drawFront()
+            for (int p=0;p<board.getInfectionRate();p++){
+                Card cityToInfect = infectionDeck.drawFront();
+                std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+                for(Vertex* v : map.getVertexList()) {
+                    if(v->getName() == cityToInfect.getName()) {
+                        std::cout << "city found\n";
+                        infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
+                    }
+                }
+
             }
 
 

@@ -1,6 +1,7 @@
 //
 // Created by Andrés Kebe on 2017-04-16.
 //
+// TODO IMPLEMENT OBSERVER!!!!!
 
 #include <iostream>
 #include "Infection.h"
@@ -14,9 +15,9 @@ Infection::Infection() {}
 Infection::~Infection() {}
 
 // todo add the methods that are commented out.
-// 
+// todo if more than 3 diseases cubes -> outbreak.
+
 void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph) {
-// todo
 //    string color = DiseaseColourEnumToString(city->getColour());
 //    if (canReduceDiseaseCubes(color,n))
 //        city->addDiseaseCubes(n);
@@ -49,6 +50,7 @@ void Infection::infectEpidemic(Board &board, CityVertex *city,vector<Player*> pl
         outbreak(board,city,players,graph);
 }
 
+// todo
 void Infection::outbreak (Board &board, CityVertex *city,vector<Player*> players, Graph &graph){
-    cout << "OUTBREAK MOTHERFUCKER"; //todo
+    cout << "OUTBREAK MOTHERFUCKER";
 }
