@@ -1,0 +1,48 @@
+San Fransisco(BLUE,0,0) : { Chicago(BLUE,3,0) Los Angeles(YELLOW,0,0) Tokyo(RED,0,0) Manila(RED,1,0) }
+Chicago(BLUE,3,0) : { San Fransisco(BLUE,0,0) Los Angeles(YELLOW,0,0) Mexico City(YELLOW,0,0) Atlanta(BLUE,0,1) Montreal(BLUE,0,0) }
+Atlanta(BLUE,0,1) : { Chicago(BLUE,3,0) Washington(BLUE,0,0) Miami(YELLOW,1,0) }
+Montreal(BLUE,0,0) : { Chicago(BLUE,3,0) Washington(BLUE,0,0) New York(BLUE,0,0) }
+Washington(BLUE,0,0) : { Montreal(BLUE,0,0) Atlanta(BLUE,0,1) New York(BLUE,0,0) Miami(YELLOW,1,0) }
+New York(BLUE,0,0) : { Montreal(BLUE,0,0) Washington(BLUE,0,0) Madrid(BLUE,0,0) London(BLUE,0,0) }
+Madrid(BLUE,0,0) : { New York(BLUE,0,0) London(BLUE,0,0) Paris(BLUE,0,0) Algiers(BLACK,0,0) Sao Paulo(YELLOW,0,0) }
+London(BLUE,0,0) : { New York(BLUE,0,0) Madrid(BLUE,0,0) Paris(BLUE,0,0) Essen(BLUE,0,0) }
+Paris(BLUE,0,0) : { London(BLUE,0,0) Madrid(BLUE,0,0) Essen(BLUE,0,0) Milan(BLUE,2,0) Algiers(BLACK,0,0) }
+Essen(BLUE,0,0) : { London(BLUE,0,0) Paris(BLUE,0,0) Milan(BLUE,2,0) St Petersburg(BLUE,3,0) }
+Milan(BLUE,2,0) : { Essen(BLUE,0,0) Paris(BLUE,0,0) Istanbul(BLACK,0,0) }
+St Petersburg(BLUE,3,0) : { Essen(BLUE,0,0) Istanbul(BLACK,0,0) Moscow(BLACK,0,0) }
+Los Angeles(YELLOW,0,0) : { San Fransisco(BLUE,0,0) Chicago(BLUE,3,0) Mexico City(YELLOW,0,0) Sydney(RED,0,0) }
+Johannesburg(YELLOW,0,0) : { Kinshasa(YELLOW,0,0) Khartoum(YELLOW,0,0) }
+Kinshasa(YELLOW,0,0) : { Lagos(YELLOW,2,0) Khartoum(YELLOW,0,0) Johannesburg(YELLOW,0,0) }
+Mexico City(YELLOW,0,0) : { Chicago(BLUE,3,0) Los Angeles(YELLOW,0,0) Miami(YELLOW,1,0) Bogota(YELLOW,0,0) Lima(YELLOW,0,0) }
+Miami(YELLOW,1,0) : { Atlanta(BLUE,0,1) Washington(BLUE,0,0) Mexico City(YELLOW,0,0) Bogota(YELLOW,0,0) }
+Lagos(YELLOW,2,0) : { Sao Paulo(YELLOW,0,0) Kinshasa(YELLOW,0,0) Khartoum(YELLOW,0,0) }
+Sao Paulo(YELLOW,0,0) : { Madrid(BLUE,0,0) Bogota(YELLOW,0,0) Buenos Aires(YELLOW,0,0) Lagos(YELLOW,2,0) }
+Santiago(YELLOW,0,0) : { Lima(YELLOW,0,0) }
+Buenos Aires(YELLOW,0,0) : { Bogota(YELLOW,0,0) Sao Paulo(YELLOW,0,0) }
+Lima(YELLOW,0,0) : { Mexico City(YELLOW,0,0) Bogota(YELLOW,0,0) Santiago(YELLOW,0,0) }
+Khartoum(YELLOW,0,0) : { Cairo(BLACK,0,0) Lagos(YELLOW,2,0) Kinshasa(YELLOW,0,0) Johannesburg(YELLOW,0,0) }
+Bogota(YELLOW,0,0) : { Mexico City(YELLOW,0,0) Miami(YELLOW,1,0) Lima(YELLOW,0,0) Buenos Aires(YELLOW,0,0) Sao Paulo(YELLOW,0,0) }
+Riyadh(BLACK,3,0) : { Cairo(BLACK,0,0) Baghdad(BLACK,0,0) Karachi(BLACK,0,0) }
+Karachi(BLACK,0,0) : { Riyadh(BLACK,3,0) Baghdad(BLACK,0,0) Tehran(BLACK,0,0) Dehli(BLACK,0,0) Mumbai(BLACK,0,0) }
+Tehran(BLACK,0,0) : { Baghdad(BLACK,0,0) Moscow(BLACK,0,0) Karachi(BLACK,0,0) Dehli(BLACK,0,0) }
+Dehli(BLACK,0,0) : { Karachi(BLACK,0,0) Mumbai(BLACK,0,0) Tehran(BLACK,0,0) Chennai(BLACK,0,0) Kolkata(BLACK,0,0) }
+Mumbai(BLACK,0,0) : { Karachi(BLACK,0,0) Dehli(BLACK,0,0) Chennai(BLACK,0,0) }
+Chennai(BLACK,0,0) : { Mumbai(BLACK,0,0) Dehli(BLACK,0,0) Kolkata(BLACK,0,0) Bangkok(RED,0,0) Jakarta(RED,2,0) }
+Kolkata(BLACK,0,0) : { Dehli(BLACK,0,0) Chennai(BLACK,0,0) Bangkok(RED,0,0) Hong Kong(RED,0,0) }
+Baghdad(BLACK,0,0) : { Cairo(BLACK,0,0) Riyadh(BLACK,3,0) Istanbul(BLACK,0,0) Karachi(BLACK,0,0) Tehran(BLACK,0,0) }
+Cairo(BLACK,0,0) : { Algiers(BLACK,0,0) Khartoum(YELLOW,0,0) Istanbul(BLACK,0,0) Baghdad(BLACK,0,0) Riyadh(BLACK,3,0) }
+Moscow(BLACK,0,0) : { St Petersburg(BLUE,3,0) Istanbul(BLACK,0,0) Tehran(BLACK,0,0) }
+Istanbul(BLACK,0,0) : { Milan(BLUE,2,0) St Petersburg(BLUE,3,0) Algiers(BLACK,0,0) Cairo(BLACK,0,0) Baghdad(BLACK,0,0) Moscow(BLACK,0,0) }
+Algiers(BLACK,0,0) : { Madrid(BLUE,0,0) Paris(BLUE,0,0) Istanbul(BLACK,0,0) Cairo(BLACK,0,0) }
+Bangkok(RED,0,0) : { Kolkata(BLACK,0,0) Chennai(BLACK,0,0) Hong Kong(RED,0,0) Jakarta(RED,2,0) Ho Chi Minh City(RED,0,0) }
+Hong Kong(RED,0,0) : { Kolkata(BLACK,0,0) Shanghai(RED,0,0) Bangkok(RED,0,0) Ho Chi Minh City(RED,0,0) Manila(RED,1,0) Taipei(RED,0,0) }
+Jakarta(RED,2,0) : { Chennai(BLACK,0,0) Bangkok(RED,0,0) Ho Chi Minh City(RED,0,0) Sydney(RED,0,0) }
+Sydney(RED,0,0) : { Los Angeles(YELLOW,0,0) Manila(RED,1,0) Jakarta(RED,2,0) }
+Manila(RED,1,0) : { San Fransisco(BLUE,0,0) Hong Kong(RED,0,0) Taipei(RED,0,0) Ho Chi Minh City(RED,0,0) Sydney(RED,0,0) }
+Tokyo(RED,0,0) : { San Fransisco(BLUE,0,0) Seoul(RED,0,0) Shanghai(RED,0,0) Osaka(RED,0,0) }
+Beijing(RED,0,0) : { Shanghai(RED,0,0) Seoul(RED,0,0) }
+Shanghai(RED,0,0) : { Beijing(RED,0,0) Seoul(RED,0,0) Tokyo(RED,0,0) Hong Kong(RED,0,0) Taipei(RED,0,0) }
+Seoul(RED,0,0) : { Beijing(RED,0,0) Shanghai(RED,0,0) Tokyo(RED,0,0) }
+Osaka(RED,0,0) : { Tokyo(RED,0,0) Taipei(RED,0,0) }
+Taipei(RED,0,0) : { Shanghai(RED,0,0) Hong Kong(RED,0,0) Osaka(RED,0,0) Manila(RED,1,0) }
+Ho Chi Minh City(RED,0,0) : { Hong Kong(RED,0,0) Manila(RED,1,0) Bangkok(RED,0,0) Jakarta(RED,2,0) }

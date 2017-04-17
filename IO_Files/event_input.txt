@@ -1,0 +1,5 @@
+Airlift : Move a pawn (yours or another player's) to any city. \You must have a player's permission to move their pawn.
+One Quiet Night : The next player to begin the Playing The Infector phase of their turn may skip that phase entirely.
+Forecast : Examine the top 6 cards of the Infection Draw Pile. \Rearrange them in the order of your choice. \Place them back on the pile.
+Government Grant : Add a Research Station to any city for free.
+Resilient Population : Take a card from the Infection Discard Pile and remove it from the game.

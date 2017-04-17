@@ -1,0 +1,48 @@
+San Fransisco(BLUE) : { Chicago(BLUE) Los Angeles(YELLOW) Tokyo(RED) Manila(RED) }
+Chicago(BLUE) : { San Fransisco(BLUE) Los Angeles(YELLOW) Mexico City(YELLOW) Atlanta(BLUE) Montreal(BLUE) }
+Montreal(BLUE) : { Chicago(BLUE) Washington(BLUE) New York(BLUE) }
+Atlanta(BLUE) : { Chicago(BLUE) Washington(BLUE) Miami(YELLOW) }
+Washington(BLUE) : { Montreal(BLUE) New York(BLUE) Atlanta(BLUE) Miami(YELLOW) }
+New York(BLUE) : { Montreal(BLUE) Washington(BLUE) Madrid(BLUE) London(BLUE) }
+London(BLUE) : { New York(BLUE) Madrid(BLUE) Paris(BLUE) Essen(BLUE) }
+Madrid(BLUE) : { New York(BLUE) London(BLUE) Paris(BLUE) Algiers(BLACK) Sao Paulo(YELLOW) }
+Essen(BLUE) : { London(BLUE) Paris(BLUE) Milan(BLUE) St Petersburg(BLUE) }
+Paris(BLUE) : { London(BLUE) Madrid(BLUE) Essen(BLUE) Milan(BLUE) Algiers(BLACK) }
+Milan(BLUE) : { Paris(BLUE) Essen(BLUE) Istanbul(BLACK) }
+St Petersburg(BLUE) : { Essen(BLUE) Istanbul(BLACK) Moscow(BLACK) }
+Algiers(BLACK) : { Madrid(BLUE) Paris(BLUE) Istanbul(BLACK) Cairo(BLACK) }
+Cairo(BLACK) : { Khartoum(YELLOW) Algiers(BLACK) Istanbul(BLACK) Baghdad(BLACK) Riyadh(BLACK) }
+Riyadh(BLACK) : { Cairo(BLACK) Baghdad(BLACK) Karachi(BLACK) }
+Baghdad(BLACK) : { Cairo(BLACK) Istanbul(BLACK) Riyadh(BLACK) Karachi(BLACK) Tehran(BLACK) }
+Istanbul(BLACK) : { Milan(BLUE) St Petersburg(BLUE) Algiers(BLACK) Cairo(BLACK) Baghdad(BLACK) Moscow(BLACK) }
+Moscow(BLACK) : { St Petersburg(BLUE) Istanbul(BLACK) Tehran(BLACK) }
+Karachi(BLACK) : { Baghdad(BLACK) Tehran(BLACK) Dehli(BLACK) Riyadh(BLACK) Mumbai(BLACK) }
+Mumbai(BLACK) : { Dehli(BLACK) Karachi(BLACK) Chennai(BLACK) }
+Tehran(BLACK) : { Baghdad(BLACK) Moscow(BLACK) Karachi(BLACK) Dehli(BLACK) }
+Dehli(BLACK) : { Tehran(BLACK) Karachi(BLACK) Mumbai(BLACK) Chennai(BLACK) Kolkata(BLACK) }
+Kolkata(BLACK) : { Dehli(BLACK) Chennai(BLACK) Bangkok(RED) Hong Kong(RED) }
+Chennai(BLACK) : { Dehli(BLACK) Mumbai(BLACK) Kolkata(BLACK) Bangkok(RED) Jakarta(RED) }
+Los Angeles(YELLOW) : { San Fransisco(BLUE) Chicago(BLUE) Mexico City(YELLOW) Sydney(RED) }
+Mexico City(YELLOW) : { Chicago(BLUE) Los Angeles(YELLOW) Miami(YELLOW) Bogota(YELLOW) Lima(YELLOW) }
+Miami(YELLOW) : { Atlanta(BLUE) Washington(BLUE) Mexico City(YELLOW) Bogota(YELLOW) }
+Bogota(YELLOW) : { Mexico City(YELLOW) Miami(YELLOW) Lima(YELLOW) Buenos Aires(YELLOW) Sao Paulo(YELLOW) }
+Lima(YELLOW) : { Mexico City(YELLOW) Bogota(YELLOW) Santiago(YELLOW) }
+Santiago(YELLOW) : { Lima(YELLOW) }
+Sao Paulo(YELLOW) : { Madrid(BLUE) Bogota(YELLOW) Buenos Aires(YELLOW) Lagos(YELLOW) }
+Buenos Aires(YELLOW) : { Bogota(YELLOW) Sao Paulo(YELLOW) }
+Lagos(YELLOW) : { Sao Paulo(YELLOW) Kinshasa(YELLOW) Khartoum(YELLOW) }
+Kinshasa(YELLOW) : { Lagos(YELLOW) Khartoum(YELLOW) Johannesburg(YELLOW) }
+Johannesburg(YELLOW) : { Kinshasa(YELLOW) Khartoum(YELLOW) }
+Khartoum(YELLOW) : { Lagos(YELLOW) Kinshasa(YELLOW) Johannesburg(YELLOW) Cairo(BLACK) }
+Beijing(RED) : { Shanghai(RED) Seoul(RED) }
+Seoul(RED) : { Shanghai(RED) Beijing(RED) Tokyo(RED) }
+Tokyo(RED) : { San Fransisco(BLUE) Shanghai(RED) Seoul(RED) Osaka(RED) }
+Shanghai(RED) : { Hong Kong(RED) Beijing(RED) Seoul(RED) Tokyo(RED) Taipei(RED) }
+Hong Kong(RED) : { Kolkata(BLACK) Bangkok(RED) Ho Chi Minh City(RED) Manila(RED) Taipei(RED) Shanghai(RED) }
+Osaka(RED) : { Tokyo(RED) Taipei(RED) }
+Taipei(RED) : { Hong Kong(RED) Shanghai(RED) Osaka(RED) Manila(RED) }
+Manila(RED) : { San Fransisco(BLUE) Hong Kong(RED) Taipei(RED) Ho Chi Minh City(RED) Sydney(RED) }
+Bangkok(RED) : { Chennai(BLACK) Kolkata(BLACK) Jakarta(RED) Ho Chi Minh City(RED) Hong Kong(RED) }
+Jakarta(RED) : { Chennai(BLACK) Bangkok(RED) Ho Chi Minh City(RED) Sydney(RED) }
+Ho Chi Minh City(RED) : { Bangkok(RED) Hong Kong(RED) Manila(RED) Jakarta(RED) }
+Sydney(RED) : { Los Angeles(YELLOW) Manila(RED) Jakarta(RED) }

@@ -1,0 +1,2 @@
+q(Scientist;PURPLE;You need only 4 cards of the same colour to do the Discover a Cure action.;Mexico City):{Istanbul,BLACK,CITY;Johannesburg,YELLOW,CITY;Taipei,RED,CITY;Cairo,BLACK,CITY;}
+w(Dispatcher;BLUE;Move another player's pawn as if it were yours. \As an action, move any pawn to a city with another pawn. \Get permission before moving another player's pawn.;Atlanta):{Khartoum,YELLOW,CITY;Riyadh,BLACK,CITY;Bogota,YELLOW,CITY;Forecast,Examine the top 6 cards of the Infection Draw Pile. \Rearrange them in the order of your choice. \Place them back on the pile.,EVENT;}

@@ -1,0 +1,8 @@
+Drive (or Ferry) : Move your pawn to an adjacent city.
+Direct Flight : Discard a card to move your pawn to the city pictured on it.
+Charter Flight : Discard the card showing your current city and move to any city on the board.
+Shuttle Flight : Move to a city containing a reasearch station if your pawn is in a city containing a station.
+Build A Research Station : Discard the card showing your current city to build a Research Station there.
+Discover A Cure : Discard 5 cards of the same colour to cure the disease of that colour. Your pawn must be in a city containing a research station.
+Treat Disease : Remove a disease cube from the city your pawn occupies. If the cure has been found, remove all the cubes of that color from the city.
+Share Knowledge : Pass a card from one player to another. Both players' pawns must be in the city pictured on the card that is passed.
