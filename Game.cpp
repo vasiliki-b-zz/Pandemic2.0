@@ -929,6 +929,7 @@ void Game::play()
                         if(v->getName() == cityToInfect.getName()) {
                             std::cout << "city found\n";
                             infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
+							
                         }
                     }
                     // todo intensify

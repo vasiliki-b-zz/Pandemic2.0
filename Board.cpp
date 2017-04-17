@@ -63,3 +63,39 @@ std::string Board::toString()
 	s += "\n========================================\n";
 	return s;
 }
+
+bool Board::canReduceDiseaseCubes(std::string color, int n){
+	if (color == "RED"){
+		if (redDiseaseCubes - n <= 0)
+			return false;
+		else{
+			redDiseaseCubes = redDiseaseCubes - n;
+			return true;
+		}
+	}
+	else if (color == "BLACK"){
+		if (blackDiseaseCubes - n <=0)
+			return false;
+		else{
+			blackDiseaseCubes = blackDiseaseCubes - n;
+			return true;
+		}
+	}
+	else if (color == "YELLOW"){
+		if (yellowDiseaseCubes - n <=0)
+			return false;
+		else{
+			yellowDiseaseCubes = yellowDiseaseCubes - n;
+			return true;
+		}
+
+	}
+	else if (color == "BLUE"){
+		if (blueDiseaseCubes - n <=0)
+			return false;
+		else{
+			blueDiseaseCubes = blueDiseaseCubes - n;
+			return true;
+		}
+	}
+}
