@@ -8,6 +8,7 @@
 #include "Graph.h"
 #include "Player.h"
 #include "TurnTaker.h"
+#include "Infection.h"
 
 
 class Game
@@ -48,6 +49,7 @@ private:
 	Deck roleDeck, infectionDeck, playerDeck, infectionDiscard, playerDiscard;
 	std::string currentPlayer;
 	int currentTurn;
+    Infection infection;
 
 	void configureBoard(); //Infection cards are configured in here
 	void configureRoleCards();
@@ -70,6 +72,7 @@ private:
 	void chooseBasicAction(Player* p, int i, TurnTaker* turnTaker);
 	void chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker);
 	void play();
+
 
 public:
 	void run();

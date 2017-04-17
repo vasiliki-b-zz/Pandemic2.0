@@ -827,27 +827,19 @@ void Game::play()
 			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
 			{
 				Card card = playerDeck.drawBack();
-				if (card.getType() == CardType::EPIDEMIC) //If player draws and EPIDEMIC card
-				{
-					board.increaseInfectionRate(); //Increase the infection rate
+                if (card.getType() == CardType::EPIDEMIC){
+                    std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
+                    Card cityToInfect = infectionDeck.drawBack();
+                    std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+                    for(Vertex* v : map.getVertexList()) {
+                        if(v->getName() == cityToInfect.getName()) {
+                            std::cout << "city found\n";
+                            infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
+                        }
+                    }
+                    // todo intensify 
 
-					Card infection = infectionDeck.drawFront(); //Draw infection card from front of deck
-					CityVertex* city = dynamic_cast<CityVertex*>(map.getVertex(infection.getName()));
-
-					if (city->getDiseaseCubes() == 0)
-						city->addDiseaseCubes(3);
-					else if (city->getDiseaseCubes() > 0) //If city has more than 1 disease cube
-					{
-						city->removeAllDiseaseCubes();
-						city->addDiseaseCubes(3); //Max is 3 disease cubes
-
-						board.increaseOutbreakMarker();
-
-						infectionDiscard.shuffle();
-						infectionDeck.merge(infectionDiscard);
-					}
-					playerDiscard.add(&card); //Discard Epidemic Card
-				}
+                }
 				else
 					players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
 			}
@@ -856,9 +848,12 @@ void Game::play()
 			{
 				discardCard(players.at(i));
 			}
-
 		//==============================================================================================TODO Infect cities
-		//***** INFECT CITIES *****
+            for (int p=0;p<2;p++){
+                infectionDeck.drawFront()
+            }
+
+
 		}
 	}
 }
