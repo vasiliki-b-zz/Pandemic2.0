@@ -11,7 +11,7 @@ void ResearcherStrategy::execute() {
     int researchIndex;
     if(canGetResearcherCard) {
         for(int i = 0; i < players.size(); i++) {
-            if (players.at(i)->getRoleSave().getName() == "Researcher") {
+            if (players.at(i)->getRoleSave()->getName() == "Researcher") {
                 researchIndex = i;
                 cv = players.at(i)->getLocation();
             }
@@ -20,12 +20,13 @@ void ResearcherStrategy::execute() {
             if(cv!= NULL && i !=researchIndex && players.at(i)->getLocation()->getName() == cv->getName()) {
                 std::cout << "Which card would you like to get?" << std::endl;
                 for(int j = 0; j < players.at(i)->getHand().size(); j++) {
-                    if(players.at(i)->getHand().at(j).getType() == CardType::CITY) {
-                        std::cout << j << "- " << players.at(i)->findCardAtIndex(j).getName() << std::endl;
+                    if(players.at(i)->getHand().at(j)->getType() == CardType::CITY) {
+                        std::cout << j << "- " << players.at(i)->findCardAtIndex(j)->getName() << std::endl;
                     }
                 }
                 std::cin >> input;
                 //swapping the cards
+
                 player->addToHand(players.at(researchIndex)->findCardAtIndex(std::stoi(input)));
                 players.at(researchIndex)->discardFromHand(std::stoi(input));
             }
@@ -34,9 +35,9 @@ void ResearcherStrategy::execute() {
         int cardToGive;
         int playerNumberInVector;
         for(int i = 0; player->getHand().size(); i++) {
-            if(player->getHand().at(i).getType() == CardType::CITY) {
+            if(player->getHand().at(i)->getType() == CardType::CITY) {
                 std::cout << "Which card would you like to give?" << std::endl;
-                std::cout << i << "- " << player->getHand().at(i).getName() << std::endl;
+                std::cout << i << "- " << player->getHand().at(i)->getName() << std::endl;
 
                 input.clear();
                 std::cin >> input;

@@ -19,8 +19,8 @@ public:
 	Deck();
 	~Deck();
 	bool isEmpty();
-	Card& drawBack();
-	Card& drawFront();
+	Card* drawBack();
+	Card* drawFront();
 	void add(Card* c) { cards.push_back(c); };
 	void merge(Deck d);
 	void discard(Card* c);

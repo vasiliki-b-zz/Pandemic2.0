@@ -362,13 +362,13 @@ void Game::initializePlayers()
 		std::cout << "~ Drawing a role card for [PLAYER " << i + 1 << "] " << player->getName() << "...\n" << std::endl;
 		roleDeck.shuffle();
 
-		RoleCard& playerRoleCard = (RoleCard&)roleDeck.drawBack();
+		RoleCard* playerRoleCard = dynamic_cast<RoleCard*>(roleDeck.drawBack());
 		player->setRole(playerRoleCard);
-        if(playerRoleCard.getName() == "Researcher") {
+        if(playerRoleCard->getName() == "Researcher") {
             hasResearcher = true;
         }
 
-		std::cout << playerRoleCard.print() << std::endl;
+		std::cout << playerRoleCard->print() << std::endl;
 
 		std::cout << "~ Drawing player cards for PLAYER " << i + 1 << " [" << player->getName() << "]...\n" << std::endl;
 		playerDeck.shuffle();
@@ -378,7 +378,7 @@ void Game::initializePlayers()
 			case 2:
 				for (int i = 0; i < TWO_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << TWO_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -386,7 +386,7 @@ void Game::initializePlayers()
 			case 3:
 				for (int i = 0; i < THREE_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << THREE_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -394,7 +394,7 @@ void Game::initializePlayers()
 			case 4:
 				for (int i = 0; i < FOUR_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << FOUR_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -422,7 +422,7 @@ void Game::initializeInfectedCities()
 
 	for (int i = 0; i < INIT_CITIES_INFECTED; i++)
 	{
-		infectionCard = &infectionDeck.drawBack();
+		infectionCard = infectionDeck.drawBack();
 
 		if (i < 3)
 		{
@@ -581,7 +581,7 @@ void Game::helpMenu(std::string input)
 
 void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 {
-	if(p->getRoleSave().getName() == "Medic") {
+	if(p->getRoleSave()->getName() == "Medic") {
 		turnTaker->setStrategy(new MedicStrategy(p, map, board));
 		turnTaker->executeStrategy();
 	}
@@ -666,9 +666,9 @@ void Game::discardCard(Player* player){
 	while (player->getHand().size() > MAX_CARDS) {
 		std::cout << "\n(!) You must discard " << player->getHand().size() - MAX_CARDS << " cards." << std::endl;
 		std::cout << "\n(!) Displaying " << player->getName()<< "'s hand:" << std::endl;
-		std::vector<Card> hand = player->getHand();
+		std::vector<Card*> hand = player->getHand();
 		for (int g = 0; g < hand.size(); g++) {
-			std::cout << "\t(" << g + 1 << ") : " << hand.at(g).getName()<<std::endl;
+			std::cout << "\t(" << g + 1 << ") : " << hand.at(g)->getName()<<std::endl;
 
 		}
 		std::cout
@@ -676,12 +676,12 @@ void Game::discardCard(Player* player){
 		int choice;
 		std::cin >> choice;
 		choice--;
-		Card chosen = hand.at(choice);
-		if (chosen.getType() == CardType::CITY) {
-			std::cout << "Discarding " << chosen.getName() << std::endl;
+		Card* chosen = hand.at(choice);
+		if (chosen->getType() == CardType::CITY) {
+			std::cout << "Discarding " << chosen->getName() << std::endl;
 			player->discardFromHand(choice);
 		}
-		else if (chosen.getType() == CardType::EVENT){
+		else if (chosen->getType() == CardType::EVENT){
 			std::cout << "Playing event card ";
 			// do event
 		}
@@ -773,10 +773,10 @@ void Game::play()
                             canGetResearcherCard = true;
                         }
                     } else {
-                        if (players.at(i)->getRoleSave().getName() == "Researcher" ||
-                            players.at(i)->getRoleSave().getName() == "Dispatcher" ||
-                            players.at(i)->getRoleSave().getName() == "Operations Expert" ||
-                            players.at(i)->getRoleSave().getName() == "Contigency Planner") {
+                        if (players.at(i)->getRoleSave()->getName() == "Researcher" ||
+                            players.at(i)->getRoleSave()->getName() == "Dispatcher" ||
+                            players.at(i)->getRoleSave()->getName() == "Operations Expert" ||
+                            players.at(i)->getRoleSave()->getName() == "Contigency Planner") {
                             std::cout << "\t3 - Role ACTION" << std::endl;
                         }
                     }
@@ -879,14 +879,14 @@ void Game::play()
                         if(canGetResearcherCard) {
                             std::cout << "1 - To get a card from Researcher" << std::endl;
                         }
-						else if(players.at(i)->getRoleSave().getName() == "Researcher") {
-							std::cout << "1 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
-						} else if(players.at(i)->getRoleSave().getName() == "Dispatcher") {
-							std::cout << "2 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
-						} else if(players.at(i)->getRoleSave().getName() == "Operations Expert") {
-							std::cout << "3 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
-						} else if(players.at(i)->getRoleSave().getName() == "Contigency Planner" && !playerDiscard.isEmpty()) {
-							std::cout << "4 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+						else if(players.at(i)->getRoleSave()->getName() == "Researcher") {
+							std::cout << "1 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Dispatcher") {
+							std::cout << "2 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Operations Expert") {
+							std::cout << "3 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Contigency Planner" && !playerDiscard.isEmpty()) {
+							std::cout << "4 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
 						}
 
 						std::cout << "\n\t0 - BACK" << std::endl;
@@ -922,13 +922,13 @@ void Game::play()
 			std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
 			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
 			{
-				Card card = playerDeck.drawBack();
-                if (card.getType() == CardType::EPIDEMIC){
+				Card* card = playerDeck.drawBack();
+                if (card->getType() == CardType::EPIDEMIC){
                     std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
-                    Card cityToInfect = infectionDeck.drawBack();
-                    std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+                    Card* cityToInfect = infectionDeck.drawBack();
+                    std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
                     for(Vertex* v : map.getVertexList()) {
-                        if(v->getName() == cityToInfect.getName()) {
+                        if(v->getName() == cityToInfect->getName()) {
                             std::cout << "city found\n";
                             infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
                         }
@@ -946,10 +946,10 @@ void Game::play()
 			}
 		//==============================================================================================TODO Infect cities
             for (int p=0;p<board.getInfectionRate();p++){
-                Card cityToInfect = infectionDeck.drawFront();
-                std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+                Card* cityToInfect = infectionDeck.drawFront();
+                std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
                 for(Vertex* v : map.getVertexList()) {
-                    if(v->getName() == cityToInfect.getName()) {
+                    if(v->getName() == cityToInfect->getName()) {
                         std::cout << "city found\n";
                         infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
                     }

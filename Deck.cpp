@@ -17,13 +17,13 @@ bool Deck::isEmpty()
 	return false;
 }
 
-Card& Deck::drawBack()
+Card* Deck::drawBack()
 {
 	try
 	{
 		Card* temp = cards.back();
 		cards.pop_back();
-		return *temp;
+		return temp;
 	}
 	catch (int e)
 	{
@@ -31,13 +31,13 @@ Card& Deck::drawBack()
 	}
 }
 
-Card& Deck::drawFront()
+Card* Deck::drawFront()
 {
 	try
 	{
 		Card* temp = cards.front();
 		pop_front(cards);
-		return *temp;
+		return temp;
 	}
 	catch (int e)
 	{

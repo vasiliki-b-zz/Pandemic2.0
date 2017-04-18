@@ -25,7 +25,7 @@ void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*>
 //        cout << "Game over!";
 //        observer pattern
     for(Player* p : players) {
-        if(p->getRoleSave().getName() == "Quarantine Specialist") {
+        if(p->getRoleSave()->getName() == "Quarantine Specialist") {
             if(p->getLocation()->getName() == city->getName()) {
                 cout << "Can't infect this city, as the quarantine specialist is in it. Thank you QS for saving us.\n";
                 return;

@@ -18,7 +18,7 @@ void TreatDisease::execute()
     }
     else
     {
-        if(player->getRoleSave().getName() == "Medic") {
+        if(player->getRoleSave()->getName() == "Medic") {
             player->getLocation()->removeAllDiseaseCubes();
         } else {
             player->getLocation()->removeDiseaseCubes(1);
