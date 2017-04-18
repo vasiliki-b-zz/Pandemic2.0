@@ -17,9 +17,9 @@ public:
 
     virtual ~Infection();
 
-    void infectCity(Board &board, CityVertex *city, int n,std::vector<Player*> players, Graph &graph);
-    void infectEpidemic(Board &board, CityVertex *city,std::vector<Player*> players, Graph &graph);
-    void outbreak(Board &board, CityVertex *city,std::vector<Player*> players, Graph &graph);
+    void infectCity(Board &board, CityVertex *city, int n,std::vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked);
+    void infectEpidemic(Board &board, CityVertex *city,std::vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked);
+    void outbreak(Board &board, CityVertex *city,std::vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked);
 private:
     Deck deck;
 
