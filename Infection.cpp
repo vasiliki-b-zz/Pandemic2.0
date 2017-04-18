@@ -17,18 +17,20 @@ Infection::~Infection() {}
 
 void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph, CityVertex* cityThatJustOutbreaked) {
     string color = DiseaseColourEnumToString(city->getColour());
-    if (board.canReduceDiseaseCubes(color,n))
-        if (city->getDiseaseCubes() == 3){
-            cout<<"There are 3 disease cubes! Outbreak will take place\n";
-            outbreak(board,city,players,graph);
-        }
-        else {
+    if (board.canReduceDiseaseCubes(color,n)) {
+        if (city->getDiseaseCubes() == 3) {
+            cout << "There are 3 disease cubes! Outbreak will take place\n";
+            outbreak(board, city, players, graph, city);
+        } else {
             city->addDiseaseCubes(n);
+            cout << "\t"<<city->getName()<<" now has " << city->getDiseaseCubes() << " diseases cubes\n";
         }
-
-    else
+    }
+    else {
         cout << "Game over!";
-//        observer pattern
+        //        observer pattern
+    }
+
     for(Player* p : players) {
         if(p->getRoleSave()->getName() == "Quarantine Specialist") {
             if(p->getLocation()->getName() == city->getName()) {
@@ -47,14 +49,19 @@ void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*>
 }
 
 void Infection::infectEpidemic(Board &board, CityVertex *city,vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked) {
-    cout << "Begin infection\n";
+    cout << "\tBegin infection\n";
     board.increaseInfectionRate();
     int numbersToAdd = 3 - city->getDiseaseCubes();
     if (numbersToAdd != 3)
-        outbreak(board,city,players,graph);
-    infectCity(board,city,numbersToAdd,players,graph);
+        outbreak(board,city,players,graph,city);
+    infectCity(board,city,numbersToAdd,players,graph,NULL);
 }
 
-void Infection::outbreak (Board &board, CityVertex *city,vector<Player*> players, Graph &graph){
-
+void Infection::outbreak (Board &board, CityVertex *city,vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked){
+    board.increaseOutbreakMarker();
+    for(Vertex* v : graph.getNeighbours(city)) {
+        if (v->getName()!=cityThatJustOutbreaked->getName()){
+            infectCity(board, dynamic_cast<CityVertex*>(v),1,players,graph,cityThatJustOutbreaked);
+        }
+    }
 }

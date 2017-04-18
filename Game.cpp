@@ -429,37 +429,37 @@ void Game::initializeInfectedCities()
 		if (i < 3)
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
-			infection.infectCity(board,infectedCity,3,players,map);
+			infection.infectCity(board,infectedCity,3,players,map,NULL);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
-			if (i == 2)
-			{
-				std::cout << "These cities have been infected with 3 disease cubes!\n" << s << std::endl;
-				s = "";
-			}
+//			if (i == 2)
+//			{
+//				std::cout << "These cities have been infected with 3 disease cubes!\n" << s << std::endl;
+//				s = "";
+//			}
 
 		}
 
 		if (i >= 3 && i < 6)
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
-			infection.infectCity(board,infectedCity,2,players,map);
+			infection.infectCity(board,infectedCity,2,players,map,NULL);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
-			if (i == 5)
-			{
-				std::cout << "These cities have been infected with 2 disease cubes!\n" << s << std::endl;
-				s = "";
-			}
+//			if (i == 5)
+//			{
+//				std::cout << "These cities have been infected with 2 disease cubes!\n" << s << std::endl;
+//				s = "";
+//			}
 		}
 		if (i >= 6)
 		{
 			infectedCity = dynamic_cast<CityVertex*>(map.getVertex(infectionCard->getName()));
-			infection.infectCity(board,infectedCity,1,players,map);
+			infection.infectCity(board,infectedCity,1,players,map,NULL);
 			s += "\to   " + infectedCity->getCity().toString() + "\n";
-			if (i == 8)
-			{
-				std::cout << "These cities have been infected with 1 disease cube!\n" << s;
-				s = "";
-			}
+//			if (i == 8)
+//			{
+//				std::cout << "These cities have been infected with 1 disease cube!\n" << s;
+//				s = "";
+//			}
 		}
 		infectionDiscard.add(infectionCard); //===================================TODO: Might have to change from deck to list?
 	}
@@ -744,10 +744,8 @@ void Game::play()
 
 	while (!gameOver)
 	{
-		//==============================================================================================TODO Outbreaks and infection rate
 		for (int i = 0; i < players.size(); i++) //For each player
 		{
-			//==============================================================================================TODO Extract to separate method
 			TurnTaker* turnTaker = new TurnTaker;
 			input = "";
 			//int actions = 4; //Number of actions a player can make
@@ -760,6 +758,14 @@ void Game::play()
 			chooseAction:
 			while(players.at(i)->getActions() > 0) // Choose an action 4 times
 			{
+				std::cout<<"Player " << i+1 << " 's hand is \n";
+				int counter = 0;
+				std::cout<<"[ ";
+				for (auto a: players.at(i)->getHand()){
+					std::cout << "(" << counter + 1 <<") " << a->getName()<<" ";
+					counter++;
+				}
+				std::cout<<"]";
                 bool canGetResearcherCard = false;
 				do
 				{
@@ -881,7 +887,7 @@ void Game::play()
                         if(canGetResearcherCard) {
                             std::cout << "1 - To get a card from Researcher" << std::endl;
                         }
-						else if(players.at(i)->getRoleSave()->getName() == "Researcher") {
+                        if(players.at(i)->getRoleSave()->getName() == "Researcher") {
 							std::cout << "1 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
 						} else if(players.at(i)->getRoleSave()->getName() == "Dispatcher") {
 							std::cout << "2 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
@@ -929,10 +935,10 @@ void Game::play()
                     playerDiscard.add(card);
                     std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
                     Card* cityToInfect = infectionDeck.drawBack();
-                    std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
+                    std::cout << "\tCity to infect : " <<cityToInfect->getName() << std::endl;
                     for(Vertex* v : map.getVertexList()) {
                         if(v->getName() == cityToInfect->getName()) {
-                            infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
+                            infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map,NULL);
                         }
                     }
                     infectionDiscard.shuffle();
@@ -941,7 +947,7 @@ void Game::play()
                     }
                 }
                 else {
-                    std::cout<<"\t" << players.at(i)->getName() << " drew " << card->getName() <<" \n";
+                    std::cout<< players.at(i)->getName() << " drew " << card->getName() <<" \n";
                     players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
                     std::cout <<"\tYou now have " << players.at(i)->getHand().size() << " cards\n";
                 }
@@ -957,7 +963,7 @@ void Game::play()
                 std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
                 for(Vertex* v : map.getVertexList()) {
                     if(v->getName() == cityToInfect->getName()) {
-                        infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
+                        infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map,NULL);
                     }
                 }
 

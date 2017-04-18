@@ -61,11 +61,11 @@ void Deck::discard(Card* c)
 
 void Deck::shuffle()
 {
-	std::cout << "Shuffling cards" << std::endl;
+	std::cout << "\t\tShuffling cards" << std::endl;
 	std::random_device rd;
 	std::mt19937 g(rd());
 	std::shuffle(this->cards.begin(), this->cards.end(), g);
-	std::cout << "Cards have been shuffled" << std::endl;
+	std::cout << "\t\tCards have been shuffled" << std::endl;
 
 //	std::srand(std::time(0));
 //	std::random_shuffle(cards.begin(), cards.end());
