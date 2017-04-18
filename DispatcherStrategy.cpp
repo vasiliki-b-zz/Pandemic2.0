@@ -60,14 +60,14 @@ void DispatcherStrategy::moveAPawnAsIfOwn(Player *p1) {
         }
         case 2: //DIRECT FLIGHT
         {
-            turnTaker->setStrategy(new DirectFlight(p1, p, *map));
+            turnTaker->setStrategy(new DirectFlight(p1, p, *map, *deck));
             turnTaker->executeStrategy();
 
             break;
         }
         case 3: //CHARTER FLIGHT
         {
-            turnTaker->setStrategy(new CharterFlight(p1, p, *map));
+            turnTaker->setStrategy(new CharterFlight(p1, p, *map, *deck));
             turnTaker->executeStrategy();
             //============================================================================================TODO don't decrement action if player doesnt have card
             break;

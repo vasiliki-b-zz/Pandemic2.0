@@ -11,6 +11,7 @@
 #include "CityVertex.h"
 #include "CardType.h"
 #include "Graph.h"
+#include "Deck.h"
 
 class Player
 {
@@ -27,8 +28,8 @@ public:
 	void setRole(RoleCard* roleCard) { this->roleCard = roleCard; this->pawnColour = roleCard->getColour(); };
 	PawnColour::PawnColour getPawnColour() { return pawnColour; };
 	void addToHand(Card* playerCard) { playerHand.push_back(playerCard); };
-	void discardFromHand(int index);
-	void discardFromHand(Card* playerCard);
+	void discardFromHand(int index, Deck* deck);
+	void discardFromHand(Card* playerCard, Deck* deck);
 	int findIndexOfCard(std::string name, CardType::CardType type);
 	std::vector<Card*> getHand() const { return playerHand; };
 	int save(std::ofstream &file, std::vector<Player*> players);

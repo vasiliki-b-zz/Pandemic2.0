@@ -11,7 +11,7 @@
 
 class DispatcherStrategy : public Strategy {
 public:
-    DispatcherStrategy(Player* p, std::vector<Player* > players, Graph &map, Board &board) {this->p = p; this->players = players; this->map = &map; this->board = &board; };
+    DispatcherStrategy(Player* p, std::vector<Player* > players, Graph &map, Board &board, Deck& deck) {this->p = p; this->players = players; this->map = &map; this->board = &board; this->deck = &deck;};
     ~DispatcherStrategy() {};
     void execute();
     void moveToACityWithAnotherPawn(Player* p);
@@ -22,5 +22,6 @@ private:
     Graph* map;
     TurnTaker* turnTaker = new TurnTaker();
     Board* board;
+    Deck* deck;
 };
 

@@ -18,16 +18,21 @@ bool Player::operator==(Player v) const
 	return false;
 }
 
-void Player::discardFromHand(int index)
+void Player::discardFromHand(int index, Deck* deck)
 {
+	deck->add(playerHand.at(index));
 	playerHand.erase(playerHand.begin() + index);
 }
 
-void Player::discardFromHand(Card* playerCard)
+void Player::discardFromHand(Card* playerCard, Deck* deck)
 {
-	for (int i = 0; i < playerHand.size(); i++)
-		if (playerCard->getType() == playerHand.at(i)->getType() && playerCard->getName() == playerHand.at(i)->getName())
+	for (int i = 0; i < playerHand.size(); i++) {
+		if (playerCard->getType() == playerHand.at(i)->getType() &&
+			playerCard->getName() == playerHand.at(i)->getName()) {
+			deck->add(playerHand.at(i));
 			playerHand.erase(playerHand.begin() + i);
+		}
+	}
 }
 
 int Player::findIndexOfCard(std::string name, CardType::CardType type)

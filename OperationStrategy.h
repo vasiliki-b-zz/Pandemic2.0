@@ -11,13 +11,14 @@
 
 class OperationStrategy : public Strategy {
 public:
-    OperationStrategy(Player* p, Graph& graph, Board& board) { this->player = p; this->map = &graph;this->board = &board;}
+    OperationStrategy(Player* p, Graph& graph, Board& board, Deck& deck) { this->player = p; this->map = &graph;this->board = &board; this->deck = &deck;}
     ~OperationStrategy() {};
     void execute();
 private:
     Player* player;
     Graph* map;
     Board* board;
+    Deck* deck;
 };
 
 

@@ -12,7 +12,7 @@ void BuildResearchStation::execute()
     {
         int index = player->findIndexOfCard(player->getLocation()->getCity().getName(), CardType::CITY);
         if (index > 0 && board->getResearchStationsLeft() > 0) {
-            player->discardFromHand(index);
+            player->discardFromHand(index, deck);
             player->getLocation()->addResearchStation();
             board->decreaseResearchStations();
         }

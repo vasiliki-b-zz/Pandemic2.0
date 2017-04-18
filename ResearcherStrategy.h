@@ -10,13 +10,14 @@
 
 class ResearcherStrategy : public Strategy {
 public:
-    ResearcherStrategy(Player* p, std::vector<Player*> players, bool canGetResearcherCard) { this->player = p;this->players = players; this->canGetResearcherCard = canGetResearcherCard;};
+    ResearcherStrategy(Player* p, std::vector<Player*> players, bool canGetResearcherCard, Deck &deck) { this->player = p;this->players = players; this->canGetResearcherCard = canGetResearcherCard; this->deck = &deck;};
     ~ResearcherStrategy() {};
     void execute();
 private:
     Player* player;
     std::vector<Player*> players;
     bool canGetResearcherCard;
+    Deck* deck;
 };
 
 

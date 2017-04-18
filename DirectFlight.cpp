@@ -36,7 +36,7 @@ void DirectFlight::execute()
             return;
         }
 
-        player->discardFromHand(index); //Discard that card
+        player->discardFromHand(index, deck); //Discard that card
 
         CityVertex *destination = (CityVertex *) map->getVertex(destinations.at(choice - 1)->getName());
 
@@ -70,7 +70,7 @@ void DirectFlight::executeDispatcher() {
         return;
     }
 
-    player->discardFromHand(index); //Discard that card
+    player->discardFromHand(index, deck); //Discard that card
 
     CityVertex *destination = (CityVertex *) map->getVertex(destinations.at(choice - 1)->getName());
 

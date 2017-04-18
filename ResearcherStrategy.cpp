@@ -28,7 +28,7 @@ void ResearcherStrategy::execute() {
                 //swapping the cards
 
                 player->addToHand(players.at(researchIndex)->findCardAtIndex(std::stoi(input)));
-                players.at(researchIndex)->discardFromHand(std::stoi(input));
+                players.at(researchIndex)->discardFromHand(std::stoi(input), deck);
             }
         }
     } else {
@@ -56,6 +56,6 @@ void ResearcherStrategy::execute() {
         }
 
         players.at(playerNumberInVector)->addToHand(players.at(playerNumberInVector)->findCardAtIndex(cardToGive));
-        player->discardFromHand(cardToGive);
+        player->discardFromHand(cardToGive, deck);
     }
 }

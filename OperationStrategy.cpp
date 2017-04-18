@@ -28,7 +28,7 @@ void OperationStrategy::execute() {
             }
             std::cin >> city;
 
-            player->discardFromHand(std::stoi(city));
+            player->discardFromHand(std::stoi(city), deck);
 
             std::cout << "Where would you like to go?" << std::endl;
             for(int i = 0; i < map->getVertexList().size(); i++) {

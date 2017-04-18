@@ -597,7 +597,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 2: //DIRECT FLIGHT
 		{
-			turnTaker->setStrategy(new DirectFlight(p,NULL, map));
+			turnTaker->setStrategy(new DirectFlight(p,NULL, map, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -605,7 +605,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 3: //CHARTER FLIGHT
 		{
-			turnTaker->setStrategy(new CharterFlight(p,NULL, map));
+			turnTaker->setStrategy(new CharterFlight(p,NULL, map, playerDiscard));
 			turnTaker->executeStrategy();
 			//============================================================================================TODO don't decrement action if player doesnt have card
 			p->decrementActions();
@@ -628,7 +628,7 @@ void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 	switch (i) {
 		case 1: //BUILD RESEARCH STATION
 		{
-			turnTaker->setStrategy(new BuildResearchStation(p, board));
+			turnTaker->setStrategy(new BuildResearchStation(p, board, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -636,7 +636,7 @@ void Game::chooseSpecialAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 2: //DISCOVER CURE
 		{
-			turnTaker->setStrategy(new DiscoverCure(p, board));
+			turnTaker->setStrategy(new DiscoverCure(p, board, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -680,7 +680,7 @@ void Game::discardCard(Player* player){
 		Card* chosen = hand.at(choice);
 		if (chosen->getType() == CardType::CITY) {
 			std::cout << "Discarding " << chosen->getName() << std::endl;
-			player->discardFromHand(choice);
+			player->discardFromHand(choice, &playerDiscard);
 		}
 		else if (chosen->getType() == CardType::EVENT){
 			std::cout << "Playing event card ";
@@ -695,21 +695,21 @@ void Game::discardCard(Player* player){
 void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 	switch(i) {
 		case 1: {
-			turnTaker->setStrategy(new ResearcherStrategy(p,players, checks));
+			turnTaker->setStrategy(new ResearcherStrategy(p,players, checks, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 2: {
-			turnTaker->setStrategy(new DispatcherStrategy(p,players, map, board));
+			turnTaker->setStrategy(new DispatcherStrategy(p,players, map, board, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 3: {
-			turnTaker->setStrategy(new OperationStrategy(p,map, board));
+			turnTaker->setStrategy(new OperationStrategy(p,map, board, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();

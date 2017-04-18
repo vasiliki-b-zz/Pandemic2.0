@@ -26,7 +26,7 @@ void CharterFlight::execute()
 
             int choice = Game::getUserIntput(1, map->getVertexList().size());
 
-            player->discardFromHand(index); //Discard current city card
+            player->discardFromHand(index, deck); //Discard current city card
 
             CityVertex* destination = (CityVertex*)map->getVertexList().at(choice);
             player->setLocation(destination);
@@ -54,7 +54,7 @@ void CharterFlight::executeDispatcher() {
 
         int choice = Game::getUserIntput(1, map->getVertexList().size());
 
-        p2->discardFromHand(index); //Discard current city card
+        p2->discardFromHand(index, deck); //Discard current city card
 
         CityVertex* destination = (CityVertex*)map->getVertexList().at(choice);
         player->setLocation(destination);
