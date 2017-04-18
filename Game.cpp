@@ -758,6 +758,8 @@ void Game::play()
 			chooseAction:
 			while(players.at(i)->getActions() > 0) // Choose an action 4 times
 			{
+                currentPlayer = players.at(i)->getName();
+				save();
 				std::cout<<"Player " << i+1 << " 's hand is \n";
 				int counter = 0;
 				std::cout<<"[ ";
@@ -968,8 +970,7 @@ void Game::play()
                 }
 
             }
-
-
+			save();
 		}
 	}
 }

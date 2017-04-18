@@ -76,3 +76,70 @@ Card* Deck::getCardAtIndex(int n) {
 	cards.erase(cards.begin() + n);
 	return cards.at(n);
 }
+
+int Deck::saveInfectionDeck(std::ofstream &file) {
+	if (file.is_open())
+	{
+		file << this->toString(); //Output board to file
+		file.close();
+		std::cout << "(OK) File saved successfully!" << std::endl;
+	}
+	else {
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
+
+	return 0;
+}
+
+int Deck::saveInfectionDiscard(std::ofstream &file) {
+	if (file.is_open())
+	{
+		file << this->toString(); //Output board to file
+		file.close();
+		std::cout << "(OK) File saved successfully!" << std::endl;
+	}
+	else {
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
+
+	return 0;
+}
+
+int Deck::savePlayerDeck(std::ofstream &file) {
+	if (file.is_open())
+	{
+		file << this->toString(); //Output board to file
+		file.close();
+		std::cout << "(OK) File saved successfully!" << std::endl;
+	}
+	else {
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
+
+	return 0;
+}
+
+int Deck::savePlayerDiscard(std::ofstream &file) {
+	if (file.is_open())
+	{
+		file << this->toString(); //Output board to file
+		file.close();
+		std::cout << "(OK) File saved successfully!" << std::endl;
+	}
+	else {
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
+
+	return 0;
+}
+
+std::string Deck::toString() {
+	std::string s = "";
+	for(int i = 0; i < cards.size(); i++) {
+		s += cards.at(i)->getCard();
+		if(i < cards.size() - 1) {
+			s+= ":";
+		}
+	}
+    return s;
+}

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Board.h"
 
 Board::~Board()
@@ -69,21 +70,21 @@ bool Board::canReduceDiseaseCubes(std::string color, int n) {
 		if (redDiseaseCubes - n <= 0)
 			return false;
 		else {
-			redDiseaseCubes = redDiseaseCubes - n;
+			redDiseaseCubes -= n;
 			return true;
 		}
 	} else if (color == "BLACK") {
 		if (blackDiseaseCubes - n <= 0)
 			return false;
 		else {
-			blackDiseaseCubes = blackDiseaseCubes - n;
+			blackDiseaseCubes -= n;
 			return true;
 		}
 	} else if (color == "YELLOW") {
 		if (yellowDiseaseCubes - n <= 0)
 			return false;
 		else {
-			yellowDiseaseCubes = yellowDiseaseCubes - n;
+			yellowDiseaseCubes -= n;
 			return true;
 		}
 
@@ -91,8 +92,66 @@ bool Board::canReduceDiseaseCubes(std::string color, int n) {
 		if (blueDiseaseCubes - n <= 0)
 			return false;
 		else {
-			blueDiseaseCubes = blueDiseaseCubes - n;
+			blueDiseaseCubes -= n;
 			return true;
 		}
 	}
+}
+
+void Board::setDiseaseCubes(std::string color, int n) {
+    if(color == "RED") {
+        redDiseaseCubes = n;
+    } else if(color == "YELLOW") {
+        yellowDiseaseCubes = n;
+    } else if(color == "BLACK") {
+        blackDiseaseCubes = n;
+    } else if(color == "BLUE") {
+        blueDiseaseCubes = n;
+    }
+}
+
+std::string Board::diseaseCubesToSave() {
+    std::string ds = "";
+    ds+= std::to_string(redDiseaseCubes)    + ",";
+    ds+= std::to_string(yellowDiseaseCubes) + ",";
+    ds+= std::to_string(blackDiseaseCubes)  + ",";
+    ds+= std::to_string(blueDiseaseCubes);
+    return ds;
+}
+
+int Board::save(std::ofstream &file) {
+	if (file.is_open())
+	{
+		file << this->toStringSave(); //Output board to file
+		file.close();
+		std::cout << "(OK) File saved successfully!" << std::endl;
+	}
+	else {
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
+
+	return 0;
+}
+
+std::string Board::toStringSave() {
+	std::string s = "";
+	s+= this->diseaseCubesToSave() + ":";
+	s+= std::to_string(getOutbreakMarker()) + ":";
+	s+= std::to_string(getInfectionRateIndex()) + ":";
+    for(int i = 0; i < 4; i++) {
+        s+= std::to_string(cureMarkers[i]);
+        if(i < 3) {
+            s+= ",";
+        }
+    }
+	s+= ":"; // separator
+    for(int i = 0; i < 4; i++) {
+        s+= std::to_string(eradicatedMarkers[i]);
+        if(i < 3) {
+            s+= ",";
+        }
+    }
+	s+= ":" + std::to_string(getResearchStationsLeft());
+    return s;
+
 }

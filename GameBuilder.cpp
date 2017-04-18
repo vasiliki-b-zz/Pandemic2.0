@@ -8,7 +8,6 @@ void SaveGameBuilder::map() {
     std::ofstream inFile(filePath.c_str());
 
     graph = m_game->getMap();
-    std::cout << graph.toString() << std::endl;
     graph.save(inFile);
 }
 
@@ -24,7 +23,13 @@ void SaveGameBuilder::gameEngine() {
     std::string filePath("../IO_Files/currentEngine.txt");
     std::ofstream inFile(filePath.c_str());
 
-    std::string s = m_game->getCurrentPlayerName() + " " + std::to_string(m_game->getCurrentTurn());
+    std::string s = "";
+    s+= m_game->getCurrentPlayerName() + " ";
+    for(Player* p: currentPlayers) {
+        if(p->getName() == m_game->getCurrentPlayerName()) {
+            s+= std::to_string(p->getActions());
+        }
+    }
     if (inFile.is_open())
     {
         inFile << s; //Output turn and number of action to file
@@ -33,6 +38,46 @@ void SaveGameBuilder::gameEngine() {
     }
     else
         std::cout << "(!) Error: IO exception..." << std::endl;
+}
+
+void SaveGameBuilder::board() {
+    std::string filePath("../IO_Files/currentBoard.txt");
+    std::ofstream inFile(filePath.c_str());
+
+    theBoard = m_game->getBoard();
+    theBoard.save(inFile);
+}
+
+void SaveGameBuilder::infectionDeck() {
+    std::string filePath("../IO_Files/currentInfectionDeck.txt");
+    std::ofstream inFile(filePath.c_str());
+
+    theInfectionDeck = m_game->getInfectionDeck();
+    theInfectionDeck.saveInfectionDeck(inFile);
+}
+
+void SaveGameBuilder::infectionDiscard() {
+    std::string filePath("../IO_Files/currentInfectionDiscard.txt");
+    std::ofstream inFile(filePath.c_str());
+
+    theInfectionDiscard = m_game->getInfectionDiscard();
+    theInfectionDiscard.saveInfectionDiscard(inFile);
+}
+
+void SaveGameBuilder::playerDeck() {
+    std::string filePath("../IO_Files/currentPlayerDeck.txt");
+    std::ofstream inFile(filePath.c_str());
+
+    thePlayerDeck = m_game->getPlayerDeck();
+    thePlayerDeck.savePlayerDeck(inFile);
+}
+
+void SaveGameBuilder::playerDiscard() {
+    std::string filePath("../IO_Files/currentPlayerDiscard.txt");
+    std::ofstream inFile(filePath.c_str());
+
+    thePlayerDiscard = m_game->getPlayerDiscard();
+    thePlayerDiscard.savePlayerDiscard(inFile);
 }
 
 void LoadGameBuilder::map() {
@@ -52,3 +97,13 @@ void LoadGameBuilder::players() {
 }
 
 void LoadGameBuilder::gameEngine() {}
+
+void LoadGameBuilder::board() {}
+
+void LoadGameBuilder::infectionDeck() {}
+
+void LoadGameBuilder::infectionDiscard() {}
+
+void LoadGameBuilder::playerDeck() {}
+
+void LoadGameBuilder::playerDiscard() {}

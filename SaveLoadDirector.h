@@ -22,11 +22,21 @@ public:
         m_gameBuilder->map();
         m_gameBuilder->players();
 //        m_gameBuilder->gameEngine();
+//        m_gameBuilder->board();
+//        m_gameBuilder->infectionDeck();
+//        m_gameBuilder->infectionDiscard();
+//        m_gameBuilder->playerDeck();
+//        m_gameBuilder->playerDiscard();
     }
     void saveGame() {
         m_gameBuilder->map();
         m_gameBuilder->players();
         m_gameBuilder->gameEngine();
+        m_gameBuilder->board();
+        m_gameBuilder->infectionDeck();
+        m_gameBuilder->infectionDiscard();
+        m_gameBuilder->playerDeck();
+        m_gameBuilder->playerDiscard();
     };
 private:
     GameBuilder* m_gameBuilder;

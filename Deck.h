@@ -3,6 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <ctime>
+#include <fstream>
+#include <sstream>
 #include <assert.h>
 #include "Card.h"
 
@@ -28,6 +30,11 @@ public:
 	Card* getCardAtIndex(int n);
 	std::vector<Card*> getCardsInDeck() { return this->cards;};
 	void shuffle();
+	int saveInfectionDeck(std::ofstream &file);
+    int saveInfectionDiscard(std::ofstream &file);
+    int savePlayerDeck(std::ofstream &file);
+    int savePlayerDiscard(std::ofstream &file);
+    std::string toString();
 private:
 	std::vector<Card*> cards;
 };

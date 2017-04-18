@@ -8,7 +8,7 @@
 void ResearcherStrategy::execute() {
     std::string input = "";
     CityVertex* cv;
-    int researchIndex;
+    int researchIndex = 0;
     if(canGetResearcherCard) {
         for(int i = 0; i < players.size(); i++) {
             if (players.at(i)->getRoleSave()->getName() == "Researcher") {
@@ -17,7 +17,7 @@ void ResearcherStrategy::execute() {
             }
         }
         for(int i = 0; i < players.size(); i++) {
-            if(cv!= NULL && i !=researchIndex && players.at(i)->getLocation()->getName() == cv->getName()) {
+            if(cv!= NULL && i != researchIndex && players.at(i)->getLocation()->getName() == cv->getName()) {
                 std::cout << "Which card would you like to get?" << std::endl;
                 for(int j = 0; j < players.at(i)->getHand().size(); j++) {
                     if(players.at(i)->getHand().at(j)->getType() == CardType::CITY) {

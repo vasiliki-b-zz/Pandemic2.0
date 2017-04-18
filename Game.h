@@ -19,8 +19,11 @@ public:
 
     Graph getMap() {return map;};
     Board getBoard() {return board;};
+	Deck getInfectionDeck() { return infectionDeck;};
+	Deck getInfectionDiscard() { return infectionDiscard;};
+	Deck getPlayerDeck() { return playerDeck;};
+	Deck getPlayerDiscard() { return playerDiscard;};
     std::vector<Player*> getPlayers() { return players;}
-	int getCurrentTurn() { return currentTurn; };
 	std::string getCurrentPlayerName() { return currentPlayer; };
 
     void setMap(Graph g) { this->map = g; };
@@ -49,7 +52,6 @@ private:
 	Card referenceCard;
 	Deck roleDeck, infectionDeck, playerDeck, infectionDiscard, playerDiscard;
 	std::string currentPlayer;
-	int currentTurn;
     Infection infection;
 
 	void configureBoard(); //Infection cards are configured in here
