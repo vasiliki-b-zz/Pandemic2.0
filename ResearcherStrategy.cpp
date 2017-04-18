@@ -57,6 +57,5 @@ void ResearcherStrategy::execute() {
 
         players.at(playerNumberInVector)->addToHand(players.at(playerNumberInVector)->findCardAtIndex(cardToGive));
         player->discardFromHand(cardToGive);
-
     }
 }

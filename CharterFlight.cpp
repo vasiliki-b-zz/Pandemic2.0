@@ -17,12 +17,12 @@ void CharterFlight::execute()
             std::cout << "\n~ Where would you like to fly?" << std::endl;
             int count = 0;
 
-            for (int i = 0; i < map->getVertexList().size(); i++)
-                if (map->getVertexList().at(i)->getName() != player->getLocation()->getName())
-                {
+            for (int i = 0; i < map->getVertexList().size(); i++) {
+                if (map->getVertexList().at(i)->getName() != player->getLocation()->getName()) {
                     count++;
                     std::cout << "\t" << count << " - " << map->getVertexList().at(i)->toString() << std::endl;
                 }
+            }
 
             int choice = Game::getUserIntput(1, map->getVertexList().size());
 
@@ -31,9 +31,10 @@ void CharterFlight::execute()
             CityVertex* destination = (CityVertex*)map->getVertexList().at(choice);
             player->setLocation(destination);
         }
-        else
+        else {
             std::cout << "\n(!) You need the City Card for " << player->getLocation()->getCity().toString() << " to complete this action!" << std::endl;
-        player->incrementActions();
+            player->incrementActions();
+        }
     }
 }
 
@@ -44,12 +45,12 @@ void CharterFlight::executeDispatcher() {
         std::cout << "\n~ Where would you like to fly?" << std::endl;
         int count = 0;
 
-        for (int i = 0; i < map->getVertexList().size(); i++)
-            if (map->getVertexList().at(i)->getName() != player->getLocation()->getName())
-            {
+        for (int i = 0; i < map->getVertexList().size(); i++) {
+            if (map->getVertexList().at(i)->getName() != player->getLocation()->getName()) {
                 count++;
                 std::cout << "\t" << count << " - " << map->getVertexList().at(i)->toString() << std::endl;
             }
+        }
 
         int choice = Game::getUserIntput(1, map->getVertexList().size());
 

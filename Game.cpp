@@ -325,6 +325,7 @@ void Game::configureEpidemicCards()//===========================================
 				}
 			}
 		}
+        playerDeck.shuffle();
 		inFile.close();
 
 		std::cout << "\n~ Epidemic cards created!" << std::endl;
@@ -879,7 +880,7 @@ void Game::play()
                         if(canGetResearcherCard) {
                             std::cout << "1 - To get a card from Researcher" << std::endl;
                         }
-						else if(players.at(i)->getRoleSave()->getName() == "Researcher") {
+                        if(players.at(i)->getRoleSave()->getName() == "Researcher") {
 							std::cout << "1 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
 						} else if(players.at(i)->getRoleSave()->getName() == "Dispatcher") {
 							std::cout << "2 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
