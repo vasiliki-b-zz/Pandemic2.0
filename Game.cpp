@@ -543,14 +543,14 @@ void Game::configure()
 	std::cout << ".................................................." << std::endl;
 	configureEventCards();
 	std::cout << ".................................................." << std::endl;
-	configureEpidemicCards();
-	std::cout << ".................................................." << std::endl;
 	initializeInfectedCities();
 	//std::cout << ".................................................." << std::endl;
 	//setDifficulty();
 	std::cout << ".................................................." << std::endl;
 	initializePlayers();
-	std::cout << ".................................................." << std::endl;
+    std::cout << ".................................................." << std::endl;
+    configureEpidemicCards();
+    std::cout << ".................................................." << std::endl;
 	std::cout << "~ Everything is set!" << std::endl;
 }
 
