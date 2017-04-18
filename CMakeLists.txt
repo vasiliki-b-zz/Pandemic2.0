@@ -4,6 +4,16 @@ project(Pandemic)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
+        IO_Files/city_input.txt
+        IO_Files/currentEngine.txt
+        IO_Files/currentMap.txt
+        IO_Files/currentPlayers.txt
+        IO_Files/epidemic_input.txt
+        IO_Files/event_input.txt
+        IO_Files/map_input.txt
+        IO_Files/reference_input.txt
+        IO_Files/role_input.txt
+        IO_Files/welcome.txt
         Board.cpp
         Board.h
         BuildResearchStation.cpp
@@ -14,12 +24,12 @@ set(SOURCE_FILES
         CardType.h
         CharterFlight.cpp
         CharterFlight.h
-        ContigencyStrategy.cpp
-        ContigencyStrategy.h
         City.cpp
         City.h
         CityVertex.cpp
         CityVertex.h
+        ContigencyStrategy.cpp
+        ContigencyStrategy.h
         Deck.cpp
         Deck.h
         DirectFlight.cpp
@@ -28,23 +38,35 @@ set(SOURCE_FILES
         DiscoverCure.h
         DiseaseColour.cpp
         DiseaseColour.h
+        DispatcherStrategy.cpp
+        DispatcherStrategy.h
         DriveOrFerry.cpp
         DriveOrFerry.h
         Edge.cpp
         Edge.h
         Game.cpp
         Game.h
+        GameBuilder.cpp
+        GameBuilder.h
         Graph.cpp
         Graph.h
         Infection.cpp
         Infection.h
         Main.cpp
+        MedicStrategy.cpp
+        MedicStrategy.h
+        OperationStrategy.cpp
+        OperationStrategy.h
         PawnColour.cpp
         PawnColour.h
         Player.cpp
         Player.h
+        ResearcherStrategy.cpp
+        ResearcherStrategy.h
         RoleCard.cpp
         RoleCard.h
+        SaveLoadDirector.cpp
+        SaveLoadDirector.h
         ShareKnowledge.cpp
         ShareKnowledge.h
         ShuttleFlight.cpp
@@ -56,11 +78,6 @@ set(SOURCE_FILES
         Util.cpp
         Util.h
         Vertex.cpp
-        Vertex.h GameBuilder.cpp GameBuilder.h SaveLoadDirector.cpp SaveLoadDirector.h MedicStrategy.cpp MedicStrategy.h ResearcherStrategy.cpp ResearcherStrategy.h OperationStrategy.cpp OperationStrategy.h DispatcherStrategy.cpp DispatcherStrategy.h)
+        Vertex.h)
 
 add_executable(Pandemic ${SOURCE_FILES})
-
-set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.63.0/include)
-set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.63.0/lib)
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
