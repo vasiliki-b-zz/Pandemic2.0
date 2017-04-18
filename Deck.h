@@ -19,8 +19,13 @@ public:
 	Deck();
 	~Deck();
 	bool isEmpty();
+<<<<<<< HEAD
     Card& drawBack();
     Card& drawFront();
+=======
+	Card* drawBack();
+	Card* drawFront();
+>>>>>>> master
 	void add(Card* c) { cards.push_back(c); };
 	void addToFront(Card* c) {cards.insert(cards.begin(),c);};
 	void merge(Deck d);

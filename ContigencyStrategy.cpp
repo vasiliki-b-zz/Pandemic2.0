@@ -13,5 +13,5 @@ void ContigencyStrategy::execute() {
         }
     }
     std::cin >> input;
-    p->addToHand(*deck->getCardAtIndex(std::stoi(input)));
+    p->addToHand(deck->getCardAtIndex(std::stoi(input)));
 }

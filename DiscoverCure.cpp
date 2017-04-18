@@ -14,24 +14,24 @@ void DiscoverCure::execute()
 		return;
 	}
 
-	std::vector<Card> blueCards, yellowCards, blackCards, redCards;
+	std::vector<Card*> blueCards, yellowCards, blackCards, redCards;
 
 	for (int i = 0; i < player->getHand().size(); i++)
 	{
-		if (player->getHand().at(i).getType() == CardType::CITY) //Get city cards only
+		if (player->getHand().at(i)->getType() == CardType::CITY) //Get city cards only
 		{
-			if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::BLUE))
-				blueCards.push_back((Card &&) player->getHand().at(i));
-			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::YELLOW))
-				yellowCards.push_back((Card&&) player->getHand().at(i));
-			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::BLACK))
-				blackCards.push_back((Card&&) player->getHand().at(i));
-			else if (player->getHand().at(i).getDescription() == DiseaseColourEnumToString(Disease::RED))
-				redCards.push_back((Card&&) player->getHand().at(i));
+			if (player->getHand().at(i)->getDescription() == DiseaseColourEnumToString(Disease::BLUE))
+				blueCards.push_back(player->getHand().at(i));
+			else if (player->getHand().at(i)->getDescription() == DiseaseColourEnumToString(Disease::YELLOW))
+				yellowCards.push_back(player->getHand().at(i));
+			else if (player->getHand().at(i)->getDescription() == DiseaseColourEnumToString(Disease::BLACK))
+				blackCards.push_back(player->getHand().at(i));
+			else if (player->getHand().at(i)->getDescription() == DiseaseColourEnumToString(Disease::RED))
+				redCards.push_back(player->getHand().at(i));
 		}
 	}
 
-	if(player->getRoleSave().getName() == "Scientist") {
+	if(player->getRoleSave()->getName() == "Scientist") {
 		if (blueCards.size() >= 4) {
 			std::cout << "\n~ You are curing the BLUE disease!" << std::endl;
 			for (int i = 0; i < blueCards.size(); i++)

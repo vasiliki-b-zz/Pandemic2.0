@@ -23,23 +23,28 @@ void Player::discardFromHand(int index)
 	playerHand.erase(playerHand.begin() + index);
 }
 
-void Player::discardFromHand(Card playerCard)
+void Player::discardFromHand(Card* playerCard)
 {
 	for (int i = 0; i < playerHand.size(); i++)
-		if (playerCard.getType() == playerHand.at(i).getType() && playerCard.getName() == playerHand.at(i).getName())
+		if (playerCard->getType() == playerHand.at(i)->getType() && playerCard->getName() == playerHand.at(i)->getName())
 			playerHand.erase(playerHand.begin() + i);
 }
 
 int Player::findIndexOfCard(std::string name, CardType::CardType type)
 {
 	for (int i = 0; i < playerHand.size(); i++)
-		if (playerHand.at(i).getName() == name && playerHand.at(i).getType() == type)
+		if (playerHand.at(i)->getName() == name && playerHand.at(i)->getType() == type)
 			return i;
 	return -1;
 }
 
+<<<<<<< HEAD
 Card Player::findCardAtIndex(int n) {
 	return this->playerHand.at(n);
+=======
+Card* Player::findCardAtIndex(int n) {
+    return this->playerHand.at(n);
+>>>>>>> master
 }
 
 int Player::save(std::ofstream &file, std::vector<Player*> players) {
@@ -100,11 +105,12 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 			auto roleDescription = params[2];
 			auto location = params[3];
 
-			RoleCard card = RoleCard(roleName,PawnColourStringToEnum(roleColor), roleDescription);
+			RoleCard* card = new RoleCard(roleName,PawnColourStringToEnum(roleColor), roleDescription);
 			Player* p = new Player(playerName);
 			p->setRole(card);
 			p->setLocation(dynamic_cast<CityVertex*>(graph.getVertex(location)));
 
+<<<<<<< HEAD
 			std::vector<std::string> cards;
 			auto cardString = playerAndHand[1];
 			cardString = cardString.erase(cardString.find("{"), 1);
@@ -120,6 +126,23 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 				auto cardType = cardParams[2];
 
 				Card cardToAdd = Card(cardName, cardColour, CardTypeStringToEnum(cardType));
+=======
+            std::vector<std::string> cards;
+            auto cardString = playerAndHand[1];
+            cardString = cardString.erase(cardString.find("{"), 1);
+            cardString = cardString.erase(cardString.find("}"), 1);
+
+            boost::split(cards, cardString, boost::is_any_of(";"));
+            assert(cards.size() > 0);
+            for(auto &card : cards) {
+                trim(card);
+                auto cardParams = parseCardsProps(card);
+                auto cardName = cardParams[0];
+                auto cardColour = cardParams[1];
+                auto cardType = cardParams[2];
+
+                Card* cardToAdd = new Card(cardName, cardColour, CardTypeStringToEnum(cardType));
+>>>>>>> master
 				p->addToHand(cardToAdd);
 			}
 			players.push_back(p);
@@ -134,14 +157,20 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 
 CityVertex* Player::researcherCity(std::vector<Player*> players) {
 	for(Player* p : players) {
+<<<<<<< HEAD
 		if(p->getRoleSave().getName() == "Researcher") {
 			return p->getLocation();
 		}
+=======
+        if(p->getRoleSave()->getName() == "Researcher") {
+            return p->getLocation();
+        }
+>>>>>>> master
 	}
 }
 
-void Player::addContingencyPlannerCard(Card card) {
-	if(this->getRoleSave().getName() == "Contigency Planner") {
+void Player::addContingencyPlannerCard(Card* card) {
+	if(this->getRoleSave()->getName() == "Contigency Planner") {
 		this->extraCardContingencyPlanner = card;
 	}
 }
@@ -149,9 +178,9 @@ void Player::addContingencyPlannerCard(Card card) {
 std::string Player::toString(std::vector<Player*> players) {
 	std::string s = "";
 	for(int i = 0; i < players.size(); i++) {
-		s += players.at(i)->getName() + "(" + players.at(i)->getRoleSave().toStringSave() + ";" + players.at(i)->getLocation()->getName() + ")" + ":{";
+		s += players.at(i)->getName() + "(" + players.at(i)->getRoleSave()->toStringSave() + ";" + players.at(i)->getLocation()->getName() + ")" + ":{";
 		for(int j = 0; j < players.at(i)->getHand().size(); j++) {
-			s+= players.at(i)->getHand().at(j).getCard() + ";";
+			s+= players.at(i)->getHand().at(j)->getCard() + ";";
 		}
 		s+= "}\n";
 	}

@@ -15,6 +15,7 @@
 #include "ResearcherStrategy.h"
 #include "OperationStrategy.h"
 #include "ContigencyStrategy.h"
+#include "DispatcherStrategy.h"
 
 Game::~Game()
 {
@@ -361,13 +362,19 @@ void Game::initializePlayers()
 		std::cout << "~ Drawing a role card for [PLAYER " << i + 1 << "] " << player->getName() << "...\n" << std::endl;
 		roleDeck.shuffle();
 
-		RoleCard& playerRoleCard = (RoleCard&)roleDeck.drawBack();
+		RoleCard* playerRoleCard = dynamic_cast<RoleCard*>(roleDeck.drawBack());
 		player->setRole(playerRoleCard);
+<<<<<<< HEAD
 		if(playerRoleCard.getName() == "Researcher") {
 			hasResearcher = true;
 		}
+=======
+        if(playerRoleCard->getName() == "Researcher") {
+            hasResearcher = true;
+        }
+>>>>>>> master
 
-		std::cout << playerRoleCard.print() << std::endl;
+		std::cout << playerRoleCard->print() << std::endl;
 
 		std::cout << "~ Drawing player cards for PLAYER " << i + 1 << " [" << player->getName() << "]...\n" << std::endl;
 		playerDeck.shuffle();
@@ -377,7 +384,7 @@ void Game::initializePlayers()
 			case 2:
 				for (int i = 0; i < TWO_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << TWO_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -385,7 +392,7 @@ void Game::initializePlayers()
 			case 3:
 				for (int i = 0; i < THREE_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << THREE_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -393,7 +400,7 @@ void Game::initializePlayers()
 			case 4:
 				for (int i = 0; i < FOUR_PLAYER_HAND; i++)
 				{
-					Card playerCard = playerDeck.drawBack();
+					Card* playerCard = playerDeck.drawBack();
 					player->addToHand(playerCard);
 				}
 				std::cout << "~ PLAYER " << i + 1 << " [" << player->getName() << "] has " << FOUR_PLAYER_HAND << " player cards.\n" << std::endl;
@@ -421,7 +428,7 @@ void Game::initializeInfectedCities()
 
 	for (int i = 0; i < INIT_CITIES_INFECTED; i++)
 	{
-		infectionCard = &infectionDeck.drawBack();
+		infectionCard = infectionDeck.drawBack();
 
 		if (i < 3)
 		{
@@ -580,7 +587,7 @@ void Game::helpMenu(std::string input)
 
 void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 {
-	if(p->getRoleSave().getName() == "Medic") {
+	if(p->getRoleSave()->getName() == "Medic") {
 		turnTaker->setStrategy(new MedicStrategy(p, map, board));
 		turnTaker->executeStrategy();
 	}
@@ -595,7 +602,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 2: //DIRECT FLIGHT
 		{
-			turnTaker->setStrategy(new DirectFlight(p, map));
+			turnTaker->setStrategy(new DirectFlight(p,NULL, map));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -603,7 +610,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 3: //CHARTER FLIGHT
 		{
-			turnTaker->setStrategy(new CharterFlight(p, map));
+			turnTaker->setStrategy(new CharterFlight(p,NULL, map));
 			turnTaker->executeStrategy();
 			//============================================================================================TODO don't decrement action if player doesnt have card
 			p->decrementActions();
@@ -665,9 +672,9 @@ void Game::discardCard(Player* player){
 	while (player->getHand().size() > MAX_CARDS) {
 		std::cout << "\n(!) You must discard " << player->getHand().size() - MAX_CARDS << " cards." << std::endl;
 		std::cout << "\n(!) Displaying " << player->getName()<< "'s hand:" << std::endl;
-		std::vector<Card> hand = player->getHand();
+		std::vector<Card*> hand = player->getHand();
 		for (int g = 0; g < hand.size(); g++) {
-			std::cout << "\t(" << g + 1 << ") : " << hand.at(g).getName()<<std::endl;
+			std::cout << "\t(" << g + 1 << ") : " << hand.at(g)->getName()<<std::endl;
 
 		}
 		std::cout
@@ -675,12 +682,12 @@ void Game::discardCard(Player* player){
 		int choice;
 		std::cin >> choice;
 		choice--;
-		Card chosen = hand.at(choice);
-		if (chosen.getType() == CardType::CITY) {
-			std::cout << "Discarding " << chosen.getName() << std::endl;
+		Card* chosen = hand.at(choice);
+		if (chosen->getType() == CardType::CITY) {
+			std::cout << "Discarding " << chosen->getName() << std::endl;
 			player->discardFromHand(choice);
 		}
-		else if (chosen.getType() == CardType::EVENT){
+		else if (chosen->getType() == CardType::EVENT){
 			std::cout << "Playing event card ";
 			// do event
 		}
@@ -693,28 +700,28 @@ void Game::discardCard(Player* player){
 void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 	switch(i) {
 		case 1: {
-			turnTaker->setStrategy(new ResearcherStrategy(players.at(i),players, checks));
+			turnTaker->setStrategy(new ResearcherStrategy(p,players, checks));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 2: {
-//			turnTaker->setStrategy(new DispatcherStrategy(players.at(i),players, map));
-//			turnTaker->executeStrategy();
+			turnTaker->setStrategy(new DispatcherStrategy(p,players, map, board));
+			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 3: {
-			turnTaker->setStrategy(new OperationStrategy(players.at(i),map, board));
+			turnTaker->setStrategy(new OperationStrategy(p,map, board));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 4: {
-			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
+			turnTaker->setStrategy(new ContigencyStrategy(p, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -765,6 +772,7 @@ void Game::play()
 					std::cout << "\t1 - BASIC ACTION" << std::endl;
 					std::cout << "\t2 - SPECIAL ACTION" << std::endl;
 
+<<<<<<< HEAD
 					if(hasResearcher) {
 						CityVertex* cv = players.at(i)->researcherCity(players);
 						if(players.at(i)->getLocation()->getName() == cv->getName()) {
@@ -779,6 +787,22 @@ void Game::play()
 							std::cout << "\t3 - Role ACTION" << std::endl;
 						}
 					}
+=======
+                    if(hasResearcher) {
+                        CityVertex* cv = players.at(i)->researcherCity(players);
+                        if(players.at(i)->getLocation()->getName() == cv->getName()) {
+                            std::cout << "\t3 - Role ACTION" << std::endl;
+                            canGetResearcherCard = true;
+                        }
+                    } else {
+                        if (players.at(i)->getRoleSave()->getName() == "Researcher" ||
+                            players.at(i)->getRoleSave()->getName() == "Dispatcher" ||
+                            players.at(i)->getRoleSave()->getName() == "Operations Expert" ||
+                            players.at(i)->getRoleSave()->getName() == "Contigency Planner") {
+                            std::cout << "\t3 - Role ACTION" << std::endl;
+                        }
+                    }
+>>>>>>> master
 
 					std:: cout << "\n\t0 - END TURN" << std::endl;
 
@@ -875,6 +899,7 @@ void Game::play()
 					do
 					{
 						std::cout << "\t~ ROLE ACTION ~" << std::endl;
+<<<<<<< HEAD
 						if(canGetResearcherCard ) {
 							std::cout << "1 - To get a card from Researcher" << std::endl;
 						}
@@ -886,6 +911,19 @@ void Game::play()
 							std::cout << "3 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
 						} else if(players.at(i)->getRoleSave().getName() == "Contigency Planner") {
 							std::cout << "4 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
+=======
+                        if(canGetResearcherCard) {
+                            std::cout << "1 - To get a card from Researcher" << std::endl;
+                        }
+						else if(players.at(i)->getRoleSave()->getName() == "Researcher") {
+							std::cout << "1 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Dispatcher") {
+							std::cout << "2 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Operations Expert") {
+							std::cout << "3 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+						} else if(players.at(i)->getRoleSave()->getName() == "Contigency Planner" && !playerDiscard.isEmpty()) {
+							std::cout << "4 - " << players.at(i)->getRoleSave()->getDescription() << std::endl;
+>>>>>>> master
 						}
 
 						std::cout << "\n\t0 - BACK" << std::endl;
@@ -921,8 +959,11 @@ void Game::play()
 			std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
 			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
 			{
-				Card card = playerDeck.drawBack();
-				if (card.getType() == CardType::EPIDEMIC){
+<<<<<<< HEAD
+				Card* card = &playerDeck.drawBack();
+                std::cout<<"Drawn card is " << card->getName() <<" \n";
+				if (card->getType() == CardType::EPIDEMIC){
+					playerDiscard.add(card);
 					std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
 					Card cityToInfect = infectionDeck.drawBack();
 					std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
@@ -933,11 +974,30 @@ void Game::play()
 
 						}
 					}
-					// todo intensify
+                    infectionDiscard.shuffle();
+                    for (auto a: infectionDiscard.getCardsInDeck()){
+                        infectionDeck.addToFront(a);
+=======
+				Card* card = playerDeck.drawBack();
+                if (card->getType() == CardType::EPIDEMIC){
+                    std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
+                    Card* cityToInfect = infectionDeck.drawBack();
+                    std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
+                    for(Vertex* v : map.getVertexList()) {
+                        if(v->getName() == cityToInfect->getName()) {
+                            std::cout << "city found\n";
+                            infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
+                        }
+>>>>>>> master
+                    }
+
+
+
 
 				}
 				else
-					players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
+                    std::cout<<"ADDING\n N : "<< card->getName() << " D :" << card->getDescription() << std::endl;
+					players.at(i)->addToHand(*card); //Keep the card if it's not an Epidemic Card
 			}
 
 			if (players.at(i)->getHand().size() >= MAX_CARDS)
@@ -945,7 +1005,9 @@ void Game::play()
 				discardCard(players.at(i));
 			}
 			//==============================================================================================TODO Infect cities
-			for (int p=0;p<board.getInfectionRate();p++){
+			std::cout<<"Player will now infect" << board.getInfectionRate() << " cities.\n";
+            for (int p=0;p<board.getInfectionRate();p++){
+<<<<<<< HEAD
 				Card cityToInfect = infectionDeck.drawFront();
 				std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
 				for(Vertex* v : map.getVertexList()) {
@@ -954,6 +1016,16 @@ void Game::play()
 						infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
 					}
 				}
+=======
+                Card* cityToInfect = infectionDeck.drawFront();
+                std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;
+                for(Vertex* v : map.getVertexList()) {
+                    if(v->getName() == cityToInfect->getName()) {
+                        std::cout << "city found\n";
+                        infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
+                    }
+                }
+>>>>>>> master
 
 			}
 
