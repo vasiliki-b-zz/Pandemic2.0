@@ -918,11 +918,12 @@ void Game::play()
 
 			//==============================================================================================TODO Extract to separate method
 
-			//***** DRAW 2 PLAYER CARDS *****
-			std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
-			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
-			{
-				Card* card = playerDeck.drawBack();
+            //***** DRAW 2 PLAYER CARDS *****
+            std::cout << "\n~ Drawing two Player Cards for Player " << i + 1 << " [" << players.at(i)->getName() << "]..." << std::endl;
+            for (int j = 0; j < 2; j++) //Draw 2 Player Cards
+            {
+                Card* card = playerDeck.drawBack();
+                std::cout<<"Drawn card is " << card->getName() <<" \n";
                 if (card->getType() == CardType::EPIDEMIC){
                     std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
                     Card* cityToInfect = infectionDeck.drawBack();
@@ -931,20 +932,24 @@ void Game::play()
                         if(v->getName() == cityToInfect->getName()) {
                             std::cout << "city found\n";
                             infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
+
                         }
                     }
-                    // todo intensify
-
+                    infectionDiscard.shuffle();
+                    for (auto a: infectionDiscard.getCardsInDeck()){
+                        infectionDeck.addToFront(a);
+                    }
                 }
-				else
-					players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
-			}
+                else
+                    std::cout<<"ADDING\n N : "<< card->getName() << " D :" << card->getDescription() << std::endl;
+                players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
+            }
 
-			if (players.at(i)->getHand().size() >= MAX_CARDS)
-			{
-				discardCard(players.at(i));
-			}
-		//==============================================================================================TODO Infect cities
+            if (players.at(i)->getHand().size() >= MAX_CARDS)
+            {
+                discardCard(players.at(i));
+            }
+            std::cout<<"Player will now infect" << board.getInfectionRate() << " cities.\n";
             for (int p=0;p<board.getInfectionRate();p++){
                 Card* cityToInfect = infectionDeck.drawFront();
                 std::cout << "City to infect : " <<cityToInfect->getName() << std::endl;

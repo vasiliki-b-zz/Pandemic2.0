@@ -22,7 +22,8 @@ public:
 	Card* drawBack();
 	Card* drawFront();
 	void add(Card* c) { cards.push_back(c); };
-	void merge(Deck d);
+    void addToFront(Card* c) {cards.insert(cards.begin(),c);};
+    void merge(Deck d);
 	void discard(Card* c);
 	Card* getCardAtIndex(int n);
 	std::vector<Card*> getCardsInDeck() { return this->cards;};

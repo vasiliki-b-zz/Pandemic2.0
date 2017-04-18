@@ -19,6 +19,7 @@ public:
 	bool hasCure(Disease::Colour colour);
 	void decreaseResearchStations() {this->researchStations--;};
 	int getResearchStationsLeft() { return this->researchStations;};
+	bool canReduceDiseaseCubes(std::string color,int n);
 	std::string toString();
 
 private:
@@ -28,5 +29,9 @@ private:
 	bool cureMarkers[4] = { false, false, false, false };
 	bool eradicatedMarkers[4] = { false, false, false, false };
 	int researchStations;
+	int redDiseaseCubes = 24;
+	int blueDiseaseCubes = 24;
+	int blackDiseaseCubes = 24;
+	int yellowDiseaseCubes = 24;
 };
 
