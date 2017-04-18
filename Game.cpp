@@ -15,6 +15,7 @@
 #include "ResearcherStrategy.h"
 #include "OperationStrategy.h"
 #include "ContigencyStrategy.h"
+#include "DispatcherStrategy.h"
 
 Game::~Game()
 {
@@ -595,7 +596,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 2: //DIRECT FLIGHT
 		{
-			turnTaker->setStrategy(new DirectFlight(p, map));
+			turnTaker->setStrategy(new DirectFlight(p,NULL, map));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -603,7 +604,7 @@ void Game::chooseBasicAction(Player* p, int i, TurnTaker* turnTaker)
 		}
 		case 3: //CHARTER FLIGHT
 		{
-			turnTaker->setStrategy(new CharterFlight(p, map));
+			turnTaker->setStrategy(new CharterFlight(p,NULL, map));
 			turnTaker->executeStrategy();
 			//============================================================================================TODO don't decrement action if player doesnt have card
 			p->decrementActions();
@@ -693,28 +694,28 @@ void Game::discardCard(Player* player){
 void Game::roleActions(Player* p, int i, TurnTaker* turnTaker, bool checks) {
 	switch(i) {
 		case 1: {
-			turnTaker->setStrategy(new ResearcherStrategy(players.at(i),players, checks));
+			turnTaker->setStrategy(new ResearcherStrategy(p,players, checks));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 2: {
-//			turnTaker->setStrategy(new DispatcherStrategy(players.at(i),players, map));
-//			turnTaker->executeStrategy();
+			turnTaker->setStrategy(new DispatcherStrategy(p,players, map, board));
+			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 3: {
-			turnTaker->setStrategy(new OperationStrategy(players.at(i),map, board));
+			turnTaker->setStrategy(new OperationStrategy(p,map, board));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
 			break;
 		}
 		case 4: {
-			turnTaker->setStrategy(new ContigencyStrategy(players.at(i), playerDiscard));
+			turnTaker->setStrategy(new ContigencyStrategy(p, playerDiscard));
 			turnTaker->executeStrategy();
 
 			p->decrementActions();
@@ -875,7 +876,7 @@ void Game::play()
 					do
 					{
 						std::cout << "\t~ ROLE ACTION ~" << std::endl;
-                        if(canGetResearcherCard ) {
+                        if(canGetResearcherCard) {
                             std::cout << "1 - To get a card from Researcher" << std::endl;
                         }
 						else if(players.at(i)->getRoleSave().getName() == "Researcher") {
@@ -884,7 +885,7 @@ void Game::play()
 							std::cout << "2 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
 						} else if(players.at(i)->getRoleSave().getName() == "Operations Expert") {
 							std::cout << "3 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
-						} else if(players.at(i)->getRoleSave().getName() == "Contigency Planner") {
+						} else if(players.at(i)->getRoleSave().getName() == "Contigency Planner" && !playerDiscard.isEmpty()) {
 							std::cout << "4 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
 						}
 

@@ -7,20 +7,27 @@
 
 void ResearcherStrategy::execute() {
     std::string input = "";
+    CityVertex* cv;
+    int researchIndex;
     if(canGetResearcherCard) {
-        for(Player* p : players) {
-            if(p->getRoleSave().getName() == "Researcher") {
-                for(int i = 0; p->getHand().size(); i++) {
-                    if(p->getHand().at(i).getType() == CardType::CITY) {
-                        std::cout << "Which card would you like to get?" << std::endl;
-                        std::cout << i << "- " << p->getHand().at(i).getName() << std::endl;
-                        std::cin >> input;
-
+        for(int i = 0; i < players.size(); i++) {
+            if (players.at(i)->getRoleSave().getName() == "Researcher") {
+                researchIndex = i;
+                cv = players.at(i)->getLocation();
+            }
+        }
+        for(int i = 0; i < players.size(); i++) {
+            if(cv!= NULL && i !=researchIndex && players.at(i)->getLocation()->getName() == cv->getName()) {
+                std::cout << "Which card would you like to get?" << std::endl;
+                for(int j = 0; j < players.at(i)->getHand().size(); j++) {
+                    if(players.at(i)->getHand().at(j).getType() == CardType::CITY) {
+                        std::cout << j << "- " << players.at(i)->findCardAtIndex(j).getName() << std::endl;
                     }
                 }
+                std::cin >> input;
                 //swapping the cards
-                player->addToHand(player->findCardAtIndex(std::stoi(input)));
-                p->discardFromHand(std::stoi(input));
+                player->addToHand(players.at(researchIndex)->findCardAtIndex(std::stoi(input)));
+                players.at(researchIndex)->discardFromHand(std::stoi(input));
             }
         }
     } else {
