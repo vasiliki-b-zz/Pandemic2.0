@@ -15,9 +15,8 @@ Infection::Infection() {}
 Infection::~Infection() {}
 
 
-void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph) {
+void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph, CityVertex* cityThatJustOutbreaked) {
     string color = DiseaseColourEnumToString(city->getColour());
-    std::cout << "color is " << color << endl;
     if (board.canReduceDiseaseCubes(color,n))
         if (city->getDiseaseCubes() == 3){
             cout<<"There are 3 disease cubes! Outbreak will take place\n";
@@ -47,7 +46,7 @@ void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*>
     }
 }
 
-void Infection::infectEpidemic(Board &board, CityVertex *city,vector<Player*> players, Graph &graph) {
+void Infection::infectEpidemic(Board &board, CityVertex *city,vector<Player*> players, Graph &graph,CityVertex* cityThatJustOutbreaked) {
     cout << "Begin infection\n";
     board.increaseInfectionRate();
     int numbersToAdd = 3 - city->getDiseaseCubes();
