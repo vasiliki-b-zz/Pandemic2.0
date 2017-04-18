@@ -26,7 +26,7 @@ bool Game::setNumOfPlayers(int n)
 		return false;
 	else
 		numOfPlayers = n;
-	return true;	
+	return true;
 }
 
 void Game::addPlayer(Player* player)
@@ -60,110 +60,110 @@ void Game::configureBoard()
 	std::string filePath("../IO_Files/map_input.txt");
 	std::ifstream inFile(filePath.c_str());
 
-    if (inFile.is_open())
-    {
-        //try
-        std::string line;
-        while (std::getline(inFile, line)) //Read file line by line
-        {
-            std::vector<std::string> cityAndNeighbours;
-            boost::split(cityAndNeighbours, line, boost::is_any_of(":"));
-            assert(cityAndNeighbours.size() == 2);
+	if (inFile.is_open())
+	{
+		//try
+		std::string line;
+		while (std::getline(inFile, line)) //Read file line by line
+		{
+			std::vector<std::string> cityAndNeighbours;
+			boost::split(cityAndNeighbours, line, boost::is_any_of(":"));
+			assert(cityAndNeighbours.size() == 2);
 
-            trim(cityAndNeighbours[0]);
-            trim(cityAndNeighbours[1]);
+			trim(cityAndNeighbours[0]);
+			trim(cityAndNeighbours[1]);
 
-            auto parseCityAndProps = [](std::string input) {
-                std::vector<std::string> nameAndProps;
-                boost::split(nameAndProps, input, boost::is_any_of("("));
-                assert(nameAndProps.size() == 2);
+			auto parseCityAndProps = [](std::string input) {
+				std::vector<std::string> nameAndProps;
+				boost::split(nameAndProps, input, boost::is_any_of("("));
+				assert(nameAndProps.size() == 2);
 
-                return nameAndProps;
-            };
+				return nameAndProps;
+			};
 
-            auto parseParams = [](std::string input) {
-                std::vector<std::string> params;
-                boost::split(params, input, boost::is_any_of(")"));
-                assert(params.size() == 2);
-                return params;
-            };
+			auto parseParams = [](std::string input) {
+				std::vector<std::string> params;
+				boost::split(params, input, boost::is_any_of(")"));
+				assert(params.size() == 2);
+				return params;
+			};
 
-            auto nameAndProps = parseCityAndProps(cityAndNeighbours[0]);
-            auto cityName = nameAndProps[0];
-            auto params = parseParams(nameAndProps[1]);
-            auto color = params[0];
-            CityVertex* cv;
+			auto nameAndProps = parseCityAndProps(cityAndNeighbours[0]);
+			auto cityName = nameAndProps[0];
+			auto params = parseParams(nameAndProps[1]);
+			auto color = params[0];
+			CityVertex* cv;
 
-            Card* infectionCard = new Card(cityName, color, CardType::INFECTION); //Create infection cards as well
-            Card* cityCard = new Card(cityName, color, CardType::CITY);
-            infectionDeck.add(infectionCard);
-            playerDeck.add(cityCard);
-            City city = City(cityName, DiseaseColourStringToEnum(color));
+			Card* infectionCard = new Card(cityName, color, CardType::INFECTION); //Create infection cards as well
+			Card* cityCard = new Card(cityName, color, CardType::CITY);
+			infectionDeck.add(infectionCard);
+			playerDeck.add(cityCard);
+			City city = City(cityName, DiseaseColourStringToEnum(color));
 
-            for(Vertex* v : map.getVertexList()) {
-                if(v->getName() == cityName) {
-                    cv = dynamic_cast<CityVertex* >(v);
-                    goto addNeighbours;
-                }
-            }
+			for(Vertex* v : map.getVertexList()) {
+				if(v->getName() == cityName) {
+					cv = dynamic_cast<CityVertex* >(v);
+					goto addNeighbours;
+				}
+			}
 
-            for(Edge edge : map.getEdgeList()) {
-                if(edge.getStart()->getName() == cityName) {
-                    map.add(edge.getStart());
-                    cv = dynamic_cast<CityVertex*>(edge.getStart());
-                    goto addNeighbours;
-                } else if (edge.getEnd()->getName() == cityName) {
-                    map.add(edge.getEnd());
-                    cv = dynamic_cast<CityVertex*>(edge.getEnd());
-                    goto addNeighbours;
-                }
-            }
-
-
-            cv = new CityVertex(city); //Create vertex with vName and vColour
-            map.add(dynamic_cast<Vertex*>(cv));
-
-            addNeighbours:
-                std::vector<std::string> neighbours;
-                auto neighboursString = cityAndNeighbours[1];
-                neighboursString = neighboursString.erase(neighboursString.find("{"), 1);
-                neighboursString = neighboursString.erase(neighboursString.find("}"), 1);
-
-                boost::split(neighbours, neighboursString, boost::is_any_of(")"));
-                assert(neighbours.size() > 0); // will fail if map is not connected!!
-                neighbours.pop_back();
+			for(Edge edge : map.getEdgeList()) {
+				if(edge.getStart()->getName() == cityName) {
+					map.add(edge.getStart());
+					cv = dynamic_cast<CityVertex*>(edge.getStart());
+					goto addNeighbours;
+				} else if (edge.getEnd()->getName() == cityName) {
+					map.add(edge.getEnd());
+					cv = dynamic_cast<CityVertex*>(edge.getEnd());
+					goto addNeighbours;
+				}
+			}
 
 
-                for (auto &neighbour : neighbours) {
-                    trim(neighbour);
-                    bool go = false;
-                    auto neighborNameAndProps = parseCityAndProps(neighbour);
-                    auto neighborCityName = neighborNameAndProps[0];
+			cv = new CityVertex(city); //Create vertex with vName and vColour
+			map.add(dynamic_cast<Vertex*>(cv));
 
-                    for(Vertex* isInList: map.getVertexList()) {
-                        if (isInList->getName() == neighborCityName) {
-                            map.addEdge(dynamic_cast<Vertex *>(cv), isInList);
-                            go = true;
-                            break;
-                        }
-                    }
+			addNeighbours:
+			std::vector<std::string> neighbours;
+			auto neighboursString = cityAndNeighbours[1];
+			neighboursString = neighboursString.erase(neighboursString.find("{"), 1);
+			neighboursString = neighboursString.erase(neighboursString.find("}"), 1);
 
-                    if(!go) {
-                        auto neighborColor = neighborNameAndProps[1];
+			boost::split(neighbours, neighboursString, boost::is_any_of(")"));
+			assert(neighbours.size() > 0); // will fail if map is not connected!!
+			neighbours.pop_back();
 
-                        City neighborCity = City(neighborCityName, DiseaseColourStringToEnum(neighborColor));
-                        CityVertex *edge = new CityVertex(neighborCity); //Create vertex with vName and vColour
-                        map.addEdge(dynamic_cast<Vertex *>(cv), dynamic_cast<Vertex *>(edge));
-                    }
-                }
-        }
 
-        inFile.close();
-        std::cout << board.toString() << std::endl << map.toString() << std::endl;
-        std::cout << "~ The board is all set!" << std::endl;
-    }
-    else
-        std::cout << "(!) Error: IO exception..." << std::endl;
+			for (auto &neighbour : neighbours) {
+				trim(neighbour);
+				bool go = false;
+				auto neighborNameAndProps = parseCityAndProps(neighbour);
+				auto neighborCityName = neighborNameAndProps[0];
+
+				for(Vertex* isInList: map.getVertexList()) {
+					if (isInList->getName() == neighborCityName) {
+						map.addEdge(dynamic_cast<Vertex *>(cv), isInList);
+						go = true;
+						break;
+					}
+				}
+
+				if(!go) {
+					auto neighborColor = neighborNameAndProps[1];
+
+					City neighborCity = City(neighborCityName, DiseaseColourStringToEnum(neighborColor));
+					CityVertex *edge = new CityVertex(neighborCity); //Create vertex with vName and vColour
+					map.addEdge(dynamic_cast<Vertex *>(cv), dynamic_cast<Vertex *>(edge));
+				}
+			}
+		}
+
+		inFile.close();
+		std::cout << board.toString() << std::endl << map.toString() << std::endl;
+		std::cout << "~ The board is all set!" << std::endl;
+	}
+	else
+		std::cout << "(!) Error: IO exception..." << std::endl;
 	CityVertex* start = dynamic_cast<CityVertex*>(map.getVertex("Atlanta"));
 	start->addResearchStation();
 	board.decreaseResearchStations();
@@ -363,9 +363,9 @@ void Game::initializePlayers()
 
 		RoleCard& playerRoleCard = (RoleCard&)roleDeck.drawBack();
 		player->setRole(playerRoleCard);
-        if(playerRoleCard.getName() == "Researcher") {
-            hasResearcher = true;
-        }
+		if(playerRoleCard.getName() == "Researcher") {
+			hasResearcher = true;
+		}
 
 		std::cout << playerRoleCard.print() << std::endl;
 
@@ -757,7 +757,7 @@ void Game::play()
 			chooseAction:
 			while(players.at(i)->getActions() > 0) // Choose an action 4 times
 			{
-                bool canGetResearcherCard = false;
+				bool canGetResearcherCard = false;
 				do
 				{
 					std::cout << "\n~ Choose an action:" << std::endl;
@@ -765,20 +765,20 @@ void Game::play()
 					std::cout << "\t1 - BASIC ACTION" << std::endl;
 					std::cout << "\t2 - SPECIAL ACTION" << std::endl;
 
-                    if(hasResearcher) {
-                        CityVertex* cv = players.at(i)->researcherCity(players);
-                        if(players.at(i)->getLocation()->getName() == cv->getName()) {
-                            std::cout << "\t3 - Role ACTION" << std::endl;
-                            canGetResearcherCard = true;
-                        }
-                    } else {
-                        if (players.at(i)->getRoleSave().getName() == "Researcher" ||
-                            players.at(i)->getRoleSave().getName() == "Dispatcher" ||
-                            players.at(i)->getRoleSave().getName() == "Operations Expert" ||
-                            players.at(i)->getRoleSave().getName() == "Contigency Planner") {
-                            std::cout << "\t3 - Role ACTION" << std::endl;
-                        }
-                    }
+					if(hasResearcher) {
+						CityVertex* cv = players.at(i)->researcherCity(players);
+						if(players.at(i)->getLocation()->getName() == cv->getName()) {
+							std::cout << "\t3 - Role ACTION" << std::endl;
+							canGetResearcherCard = true;
+						}
+					} else {
+						if (players.at(i)->getRoleSave().getName() == "Researcher" ||
+							players.at(i)->getRoleSave().getName() == "Dispatcher" ||
+							players.at(i)->getRoleSave().getName() == "Operations Expert" ||
+							players.at(i)->getRoleSave().getName() == "Contigency Planner") {
+							std::cout << "\t3 - Role ACTION" << std::endl;
+						}
+					}
 
 					std:: cout << "\n\t0 - END TURN" << std::endl;
 
@@ -875,9 +875,9 @@ void Game::play()
 					do
 					{
 						std::cout << "\t~ ROLE ACTION ~" << std::endl;
-                        if(canGetResearcherCard ) {
-                            std::cout << "1 - To get a card from Researcher" << std::endl;
-                        }
+						if(canGetResearcherCard ) {
+							std::cout << "1 - To get a card from Researcher" << std::endl;
+						}
 						else if(players.at(i)->getRoleSave().getName() == "Researcher") {
 							std::cout << "1 - " << players.at(i)->getRoleSave().getDescription() << std::endl;
 						} else if(players.at(i)->getRoleSave().getName() == "Dispatcher") {
@@ -922,20 +922,20 @@ void Game::play()
 			for (int j = 0; j < 2; j++) //Draw 2 Player Cards
 			{
 				Card card = playerDeck.drawBack();
-                if (card.getType() == CardType::EPIDEMIC){
-                    std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
-                    Card cityToInfect = infectionDeck.drawBack();
-                    std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
-                    for(Vertex* v : map.getVertexList()) {
-                        if(v->getName() == cityToInfect.getName()) {
-                            std::cout << "city found\n";
-                            infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
-							
-                        }
-                    }
-                    // todo intensify
+				if (card.getType() == CardType::EPIDEMIC){
+					std::cout << players.at(i)->getName() << " has drawn an epidemic card!\n";
+					Card cityToInfect = infectionDeck.drawBack();
+					std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+					for(Vertex* v : map.getVertexList()) {
+						if(v->getName() == cityToInfect.getName()) {
+							std::cout << "city found\n";
+							infection.infectEpidemic(board, dynamic_cast<CityVertex*>(v),players,map);
 
-                }
+						}
+					}
+					// todo intensify
+
+				}
 				else
 					players.at(i)->addToHand(card); //Keep the card if it's not an Epidemic Card
 			}
@@ -944,18 +944,18 @@ void Game::play()
 			{
 				discardCard(players.at(i));
 			}
-		//==============================================================================================TODO Infect cities
-            for (int p=0;p<board.getInfectionRate();p++){
-                Card cityToInfect = infectionDeck.drawFront();
-                std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
-                for(Vertex* v : map.getVertexList()) {
-                    if(v->getName() == cityToInfect.getName()) {
-                        std::cout << "city found\n";
-                        infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
-                    }
-                }
+			//==============================================================================================TODO Infect cities
+			for (int p=0;p<board.getInfectionRate();p++){
+				Card cityToInfect = infectionDeck.drawFront();
+				std::cout << "City to infect : " <<cityToInfect.getName() << std::endl;
+				for(Vertex* v : map.getVertexList()) {
+					if(v->getName() == cityToInfect.getName()) {
+						std::cout << "city found\n";
+						infection.infectCity(board,dynamic_cast<CityVertex*>(v),1,players,map);
+					}
+				}
 
-            }
+			}
 
 
 		}
@@ -973,16 +973,16 @@ void Game::save() {
 }
 
 void Game::load() {
-    SaveLoadDirector cook;
-    GameBuilder* load = new LoadGameBuilder(this);
+	SaveLoadDirector cook;
+	GameBuilder* load = new LoadGameBuilder(this);
 
-    cook.setGameBuilder(load);
-    cook.constructGame();
+	cook.setGameBuilder(load);
+	cook.constructGame();
 }
 
 void Game::run()
 {
 	start();
-    configure();
+	configure();
 	play();
 }

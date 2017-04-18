@@ -14,14 +14,19 @@ Infection::Infection() {}
 
 Infection::~Infection() {}
 
-// todo add the methods that are commented out.
-// todo if more than 3 diseases cubes -> outbreak.
 
 void Infection::infectCity(Board &board, CityVertex *city, int n,vector<Player*> players, Graph &graph) {
     string color = DiseaseColourEnumToString(city->getColour());
     std::cout << "color is " << color << endl;
     if (board.canReduceDiseaseCubes(color,n))
-        city->addDiseaseCubes(n);
+        if (city->getDiseaseCubes() == 3){
+            cout<<"There are 3 disease cubes! Outbreak will take place\n";
+            outbreak(board,city,players,graph);
+        }
+        else {
+            city->addDiseaseCubes(n);
+        }
+
     else
         cout << "Game over!";
 //        observer pattern
@@ -51,7 +56,6 @@ void Infection::infectEpidemic(Board &board, CityVertex *city,vector<Player*> pl
     infectCity(board,city,numbersToAdd,players,graph);
 }
 
-// todo
 void Infection::outbreak (Board &board, CityVertex *city,vector<Player*> players, Graph &graph){
-    cout << "OUTBREAK MOTHERFUCKER";
+
 }

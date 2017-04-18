@@ -39,7 +39,7 @@ int Player::findIndexOfCard(std::string name, CardType::CardType type)
 }
 
 Card Player::findCardAtIndex(int n) {
-    return this->playerHand.at(n);
+	return this->playerHand.at(n);
 }
 
 int Player::save(std::ofstream &file, std::vector<Player*> players) {
@@ -85,12 +85,12 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 				return roleParams;
 			};
 
-            auto parseCardsProps = [] (std::string input) {
-                std::vector<std::string> cardParams;
-                boost::split(cardParams, input, boost::is_any_of(","));
-                assert(cardParams.size() == 3);
-                return cardParams;
-            };
+			auto parseCardsProps = [] (std::string input) {
+				std::vector<std::string> cardParams;
+				boost::split(cardParams, input, boost::is_any_of(","));
+				assert(cardParams.size() == 3);
+				return cardParams;
+			};
 
 			auto nameAndProps = parseNameAndProps(playerAndHand[0]);
 			auto playerName = nameAndProps[0];
@@ -105,38 +105,38 @@ std::vector<Player*> Player::loadPlayers(std::ifstream &file, Graph &graph) {
 			p->setRole(card);
 			p->setLocation(dynamic_cast<CityVertex*>(graph.getVertex(location)));
 
-            std::vector<std::string> cards;
-            auto cardString = playerAndHand[1];
-            cardString = cardString.erase(cardString.find("{"), 1);
-            cardString = cardString.erase(cardString.find("}"), 1);
+			std::vector<std::string> cards;
+			auto cardString = playerAndHand[1];
+			cardString = cardString.erase(cardString.find("{"), 1);
+			cardString = cardString.erase(cardString.find("}"), 1);
 
-            boost::split(cards, cardString, boost::is_any_of(";"));
-            assert(cards.size() > 0);
-            for(auto &card : cards) {
-                trim(card);
-                auto cardParams = parseCardsProps(card);
-                auto cardName = cardParams[0];
-                auto cardColour = cardParams[1];
-                auto cardType = cardParams[2];
+			boost::split(cards, cardString, boost::is_any_of(";"));
+			assert(cards.size() > 0);
+			for(auto &card : cards) {
+				trim(card);
+				auto cardParams = parseCardsProps(card);
+				auto cardName = cardParams[0];
+				auto cardColour = cardParams[1];
+				auto cardType = cardParams[2];
 
-                Card cardToAdd = Card(cardName, cardColour, CardTypeStringToEnum(cardType));
+				Card cardToAdd = Card(cardName, cardColour, CardTypeStringToEnum(cardType));
 				p->addToHand(cardToAdd);
-            }
+			}
 			players.push_back(p);
 		}
 
 		file.close();
 	}
 	else {
-        std::cout << "(!) Error: IO exception..." << std::endl;
-    }
+		std::cout << "(!) Error: IO exception..." << std::endl;
+	}
 }
 
 CityVertex* Player::researcherCity(std::vector<Player*> players) {
 	for(Player* p : players) {
-        if(p->getRoleSave().getName() == "Researcher") {
-            return p->getLocation();
-        }
+		if(p->getRoleSave().getName() == "Researcher") {
+			return p->getLocation();
+		}
 	}
 }
 

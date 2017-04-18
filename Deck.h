@@ -19,14 +19,16 @@ public:
 	Deck();
 	~Deck();
 	bool isEmpty();
-	Card& drawBack();
-	Card& drawFront();
+    Card& drawBack();
+    Card& drawFront();
 	void add(Card* c) { cards.push_back(c); };
+	void addToFront(Card* c) {cards.insert(cards.begin(),c);};
 	void merge(Deck d);
 	void discard(Card* c);
 	Card* getCardAtIndex(int n);
 	std::vector<Card*> getCardsInDeck() { return this->cards;};
 	void shuffle();
+
 private:
 	std::vector<Card*> cards;
 };
